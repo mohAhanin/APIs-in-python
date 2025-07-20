@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Beginner Course - Session 6: Lists, Dictionaries, Tuples, and For Each Loop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .example {
+            margin: 20px 0;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Beginner Course - Session 6</h1>
+        <h2>Topic: Lists, Dictionaries, Tuples, and For Each Loop</h2>
+        
+        <h3>1. Lists in Python</h3>
+        <p>A list is a mutable, ordered collection of items. Lists can contain any data type and are defined using square brackets <code>[]</code>.</p>
+        
+        <div class="example">
+            <h4>Example 1: Creating and Accessing Lists</h4>
+            <pre><code># Creating a list
+fruits = ["apple", "banana", "orange", "grape"]
+print(fruits)  # Output: ['apple', 'banana', 'orange', 'grape']
+
+# Accessing elements (indexing)
+print(fruits[0])  # Output: apple
+print(fruits[-1])  # Output: grape (last item)
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Slicing Lists</h4>
+            <pre><code># Slicing to get a portion of the list
+numbers = [1, 2, 3, 4, 5]
+print(numbers[1:4])  # Output: [2, 3, 4]
+print(numbers[:3])   # Output: [1, 2, 3]
+print(numbers[2:])   # Output: [3, 4, 5]
+print(numbers[::2])  # Output: [1, 3, 5] (every second item)
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 3: Modifying Lists</h4>
+            <pre><code># Modifying list elements
+colors = ["red", "blue", "green"]
+colors[1] = "yellow"
+print(colors)  # Output: ['red', 'yellow', 'green']
+
+# Adding elements
+colors.append("purple")
+print(colors)  # Output: ['red', 'yellow', 'green', 'purple']
+
+# Removing elements
+colors.pop()
+print(colors)  # Output: ['red', 'yellow', 'green']
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Lists are mutable, meaning you can change their contents after creation. Indexing starts at 0, and negative indices count from the end.</p>
+        </div>
+        
+        <h3>2. Dictionaries in Python</h3>
+        <p>A dictionary is an unordered collection of key-value pairs, defined using curly braces <code>{}</code>. Keys must be unique and immutable.</p>
+        
+        <div class="example">
+            <h4>Example 1: Creating and Accessing Dictionaries</h4>
+            <pre><code># Creating a dictionary
+student = {"name": "Alice", "age": 20, "major": "Computer Science"}
+print(student)  # Output: {'name': 'Alice', 'age': 20, 'major': 'Computer Science'}
+
+# Accessing values
+print(student["name"])  # Output: Alice
+print(student.get("age"))  # Output: 20
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Modifying Dictionaries</h4>
+            <pre><code># Modifying a value
+student["age"] = 21
+print(student)  # Output: {'name': 'Alice', 'age': 21, 'major': 'Computer Science'}
+
+# Adding a new key-value pair
+student["gpa"] = 3.8
+print(student)  # Output: {'name': 'Alice', 'age': 21, 'major': 'Computer Science', 'gpa': 3.8}
+
+# Removing a key-value pair
+del student["major"]
+print(student)  # Output: {'name': 'Alice', 'age': 21, 'gpa': 3.8}
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Use <code>.get()</code> to safely access dictionary values to avoid errors if the key doesn't exist.</p>
+        </div>
+        
+        <h3>3. Tuples in Python</h3>
+        <p>A tuple is an immutable, ordered collection of items, defined using parentheses <code>()</code>.</p>
+        
+        <div class="example">
+            <h4>Example 1: Creating and Accessing Tuples</h4>
+            <pre><code># Creating a tuple
+coordinates = (10, 20)
+print(coordinates)  # Output: (10, 20)
+
+# Accessing elements
+print(coordinates[0])  # Output: 10
+print(coordinates[1])  # Output: 20
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Tuple Immutability</h4>
+            <pre><code># Trying to modify a tuple (will raise an error)
+coordinates = (10, 20)
+# coordinates[0] = 15  # This will cause an error because tuples are immutable
+print(coordinates)  # Output: (10, 20)
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Tuples are immutable, so they cannot be changed after creation. Use them when you want data to remain constant.</p>
+        </div>
+        
+        <h3>4. For Each Loop in Python</h3>
+        <p>The <code>for</code> loop in Python iterates over items in a sequence (like a list, tuple, or dictionary).</p>
+        
+        <div class="example">
+            <h4>Example 1: Looping Through a List</h4>
+            <pre><code># Iterating over a list
+animals = ["cat", "dog", "bird"]
+for animal in animals:
+    print(f"I have a {animal}")
+# Output:
+# I have a cat
+# I have a dog
+# I have a bird
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Looping Through a Dictionary</h4>
+            <pre><code># Iterating over dictionary keys
+person = {"name": "Bob", "age": 25, "city": "New York"}
+for key in person:
+    print(f"{key}: {person[key]}")
+# Output:
+# name: Bob
+# age: 25
+# city: New York
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 3: Looping Through a Tuple</h4>
+            <pre><code># Iterating over a tuple
+days = ("Monday", "Tuesday", "Wednesday")
+for day in days:
+    print(f"Today is {day}")
+# Output:
+# Today is Monday
+# Today is Tuesday
+# Today is Wednesday
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> The <code>for each</code> loop in Python is written as <code>for item in sequence</code>. It automatically iterates over each item in the sequence.</p>
+        </div>
+        
+        <h3>Practice Exercises</h3>
+        <ol>
+            <li>Create a list of your favorite foods and print the first and last items.</li>
+            <li>Create a dictionary with information about a book (title, author, year) and add a new key-value pair for the genre.</li>
+            <li>Create a tuple with three numbers and use a for loop to print each number multiplied by 2.</li>
+            <li>Use a for loop to print all even numbers from a list of numbers from 1 to 10.</li>
+        </ol>
+    </div>
+</body>
+</html>
