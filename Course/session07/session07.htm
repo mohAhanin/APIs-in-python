@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Beginner Course - Session 7: Functions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .example {
+            margin: 20px 0;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Beginner Course - Session 7</h1>
+        <h2>Topic: Functions in Python</h2>
+        
+        <h3>1. Introduction to Functions</h3>
+        <p>Functions are reusable blocks of code that perform a specific task. They are defined using the <code>def</code> keyword and can take inputs (parameters) and return outputs.</p>
+        
+        <div class="example">
+            <h4>Example 1: Defining and Calling a Simple Function</h4>
+            <pre><code># Defining a function
+def greet():
+    print("Hello, welcome to Python!")
+
+# Calling the function
+greet()  # Output: Hello, welcome to Python!
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Function with Parameters</h4>
+            <pre><code># Function with a parameter
+def greet_person(name):
+    print(f"Hello, {name}!")
+
+# Calling the function with different arguments
+greet_person("Alice")  # Output: Hello, Alice!
+greet_person("Bob")   # Output: Hello, Bob!
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Parameters are placeholders in the function definition, and arguments are the actual values passed when calling the function.</p>
+        </div>
+        
+        <h3>2. Functions with Return Values</h3>
+        <p>Functions can return values using the <code>return</code> statement, allowing the result to be used elsewhere in the code.</p>
+        
+        <div class="example">
+            <h4>Example 1: Returning a Value</h4>
+            <pre><code># Function that returns a value
+def square(number):
+    return number * number
+
+# Using the returned value
+result = square(5)
+print(result)  # Output: 25
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Function with Multiple Parameters</h4>
+            <pre><code># Function with multiple parameters
+def add_numbers(a, b):
+    return a + b
+
+# Using the function
+sum = add_numbers(3, 7)
+print(sum)  # Output: 10
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> The <code>return</code> statement exits the function and sends a value back to the caller. If no return is specified, the function returns <code>None</code>.</p>
+        </div>
+        
+        <h3>3. Default Parameters and Keyword Arguments</h3>
+        <p>Functions can have default parameter values and can be called using keyword arguments for clarity.</p>
+        
+        <div class="example">
+            <h4>Example 1: Default Parameters</h4>
+            <pre><code># Function with a default parameter
+def introduce(name, greeting="Hello"):
+    print(f"{greeting}, {name}!")
+
+# Calling with and without the default parameter
+introduce("Alice")          # Output: Hello, Alice!
+introduce("Bob", "Hi")      # Output: Hi, Bob!
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Keyword Arguments</h4>
+            <pre><code># Function with multiple parameters
+def describe_person(name, age):
+    print(f"{name} is {age} years old.")
+
+# Using keyword arguments
+describe_person(age=25, name="Charlie")  # Output: Charlie is 25 years old.
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Note:</strong> Default parameters allow flexibility, and keyword arguments improve code readability by explicitly naming the arguments.</p>
+        </div>
+        
+        <h3>4. Functions with Lists and Dictionaries</h3>
+        <p>Functions can work with data structures like lists and dictionaries to perform useful tasks.</p>
+        
+        <div class="example">
+            <h4>Example 1: Processing a List</h4>
+            <pre><code># Function to print list items
+def print_list(items):
+    for item in items:
+        print(item)
+
+# Calling the function
+fruits = ["apple", "banana", "orange"]
+print_list(fruits)
+# Output:
+# apple
+# banana
+# orange
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Updating a Dictionary</h4>
+            <pre><code># Function to add a key-value pair to a dictionary
+def add_to_dict(dictionary, key, value):
+    dictionary[key] = value
+    return dictionary
+
+# Using the function
+student = {"name": "Alice", "age": 20}
+updated_student = add_to_dict(student, "grade", "A")
+print(updated_student)  # Output: {'name': 'Alice', 'age': 20, 'grade': 'A'}
+            </code></pre>
+        </div>
+        
+        <h3>Practice Exercises</h3>
+        <ol>
+            <li>Write a function that takes a number and returns its cube (number * number * number).</li>
+            <li>Create a function that takes a name and a greeting (with a default value of "Welcome") and prints a greeting message.</li>
+            <li>Write a function that takes a list of numbers and returns the sum of all numbers in the list.</li>
+            <li>Create a function that takes a dictionary and a key, and returns the value associated with that key if it exists, or "Not found" if it doesn't.</li>
+        </ol>
+    </div>
+</body>
+</html>
