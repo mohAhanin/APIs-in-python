@@ -1,0 +1,449 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Beginner Course - Session 8: Functions, Loops, and Lists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        h4 {
+            color: #2c3e50;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .example {
+            margin: 20px 0;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Beginner Course - Session 8</h1>
+        <h2>Topic: Functions, For Loops, While Loops, and Lists</h2>
+        
+        <h3>Practice Combining Functions, Loops, and Lists</h3>
+        <p>These exercises combine functions with for loops, while loops, and lists to help you practice Python programming.</p>
+        
+        <div class="example">
+            <h4>Exercise 1: Sum of List (For Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>sum_list(numbers)</code> that takes a list of numbers and returns their sum using a for loop.</p>
+            <pre><code>numbers = [1, 2, 3, 4, 5]
+print(sum_list(numbers))  # Output: 15
+
+def sum_list(numbers):
+    total = 0
+    for num in numbers:
+        total += num
+    return total
+
+numbers = [1, 2, 3, 4, 5]
+print(sum_list(numbers))
+            </code></pre>
+            <h4>Additional Example: Sum of Even Numbers</h4>
+            <pre><code>numbers = [1, 2, 3, 4, 5, 6]
+print(sum_evens(numbers))  # Output: 12
+
+def sum_evens(numbers):
+    total = 0
+    for num in numbers:
+        if num % 2 == 0:
+            total += num
+    return total
+
+numbers = [1, 2, 3, 4, 5, 6]
+print(sum_evens(numbers))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 2: Count Even Numbers (While Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>count_evens(numbers)</code> that counts how many even numbers are in a list using a while loop.</p>
+            <pre><code>numbers = [1, 2, 3, 4, 6, 8, 9]
+print(count_evens(numbers))  # Output: 4
+
+def count_evens(numbers):
+    count = 0
+    i = 0
+    while i < len(numbers):
+        if numbers[i] % 2 == 0:
+            count += 1
+        i += 1
+    return count
+
+numbers = [1, 2, 3, 4, 6, 8, 9]
+print(count_evens(numbers))
+            </code></pre>
+            <h4>Additional Example: Count Odd Numbers</h4>
+            <pre><code>numbers = [1, 2, 3, 4, 5, 6, 7]
+print(count_odds(numbers))  # Output: 4
+
+def count_odds(numbers):
+    count = 0
+    i = 0
+    while i < len(numbers):
+        if numbers[i] % 2 != 0:
+            count += 1
+        i += 1
+    return count
+
+numbers = [1, 2, 3, 4, 5, 6, 7]
+print(count_odds(numbers))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 3: Reverse a List (For Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>reverse_list(lst)</code> that reverses a list without using <code>[::-1]</code> or <code>.reverse()</code>.</p>
+            <pre><code>my_list = [10, 20, 30, 40]
+print(reverse_list(my_list))  # Output: [40, 30, 20, 10]
+
+def reverse_list(lst):
+    reversed_lst = []
+    for item in lst:
+        reversed_lst.insert(0, item)
+    return reversed_lst
+
+my_list = [10, 20, 30, 40]
+print(reverse_list(my_list))
+            </code></pre>
+            <h4>Additional Example: Reverse Strings in List</h4>
+            <pre><code>words = ["hello", "world", "python"]
+print(reverse_strings(words))  # Output: ['olleh', 'dlrow', 'nohtyp']
+
+def reverse_strings(lst):
+    reversed_lst = []
+    for item in lst:
+        reversed_lst.append(item[::-1])
+    return reversed_lst
+
+words = ["hello", "world", "python"]
+print(reverse_strings(words))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 4: Find Maximum (While Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>find_max(numbers)</code> that finds the largest number in a list using a while loop (without <code>max()</code>).</p>
+            <pre><code>numbers = [4, 9, 2, 7, 5]
+print(find_max(numbers))  # Output: 9
+
+def find_max(numbers):
+    max_num = numbers[0]
+    i = 1
+    while i < len(numbers):
+        if numbers[i] > max_num:
+            max_num = numbers[i]
+        i += 1
+    return max_num
+
+numbers = [4, 9, 2, 7, 5]
+print(find_max(numbers))
+            </code></pre>
+            <h4>Additional Example: Find Minimum</h4>
+            <pre><code>numbers = [4, 9, 2, 7, 5]
+print(find_min(numbers))  # Output: 2
+
+def find_min(numbers):
+    min_num = numbers[0]
+    i = 1
+    while i < len(numbers):
+        if numbers[i] < min_num:
+            min_num = numbers[i]
+        i += 1
+    return min_num
+
+numbers = [4, 9, 2, 7, 5]
+print(find_min(numbers))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 5: Remove Duplicates (For Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>remove_duplicates(lst)</code> that removes duplicate items from a list and returns a new list.</p>
+            <pre><code>my_list = [1, 2, 2, 3, 4, 4, 5]
+print(remove_duplicates(my_list))  # Output: [1, 2, 3, 4, 5]
+
+def remove_duplicates(lst):
+    new_list = []
+    for item in lst:
+        if item not in new_list:
+            new_list.append(item)
+    return new_list
+
+my_list = [1, 2, 2, 3, 4, 4, 5]
+print(remove_duplicates(my_list))
+            </code></pre>
+            <h4>Additional Example: Keep First Occurrence</h4>
+            <pre><code>my_list = ["apple", "banana", "apple", "cherry"]
+print(keep_first(my_list))  # Output: ['apple', 'banana', 'cherry']
+
+def keep_first(lst):
+    seen = []
+    for item in lst:
+        if item not in seen:
+            seen.append(item)
+    return seen
+
+my_list = ["apple", "banana", "apple", "cherry"]
+print(keep_first(my_list))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 6: Fibonacci Sequence (While Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>fibonacci(n)</code> that generates the first n Fibonacci numbers using a while loop.</p>
+            <pre><code>print(fibonacci(7))  # Output: [0, 1, 1, 2, 3, 5, 8]
+
+def fibonacci(n):
+    fib = [0, 1]
+    while len(fib) < n:
+        fib.append(fib[-1] + fib[-2])
+    return fib[:n]
+
+print(fibonacci(7))
+            </code></pre>
+            <h4>Additional Example: Fibonacci Up to Value</h4>
+            <pre><code>print(fibonacci_up_to(10))  # Output: [0, 1, 1, 2, 3, 5, 8]
+
+def fibonacci_up_to(max_value):
+    fib = [0, 1]
+    while fib[-1] + fib[-2] <= max_value:
+        fib.append(fib[-1] + fib[-2])
+    return fib
+
+print(fibonacci_up_to(10))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 7: Square Numbers (List Comprehension + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>square_numbers(numbers)</code> that returns a new list with each number squared, using list comprehension.</p>
+            <pre><code>numbers = [1, 2, 3, 4]
+print(square_numbers(numbers))  # Output: [1, 4, 9, 16]
+
+def square_numbers(numbers):
+    return [num ** 2 for num in numbers]
+
+numbers = [1, 2, 3, 4]
+print(square_numbers(numbers))
+            </code></pre>
+            <h4>Additional Example: Cube Numbers</h4>
+            <pre><code>numbers = [1, 2, 3, 4]
+print(cube_numbers(numbers))  # Output: [1, 8, 27, 64]
+
+def cube_numbers(numbers):
+    return [num ** 3 for num in numbers]
+
+numbers = [1, 2, 3, 4]
+print(cube_numbers(numbers))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 8: Prime Checker (For Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>is_prime(num)</code> that checks if a number is prime (returns True or False).</p>
+            <pre><code>print(is_prime(7))  # Output: True
+print(is_prime(4))  # Output: False
+
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+print(is_prime(7))
+print(is_prime(4))
+            </code></pre>
+            <h4>Additional Example: List of Primes</h4>
+            <pre><code>print(get_primes(10))  # Output: [2, 3, 5, 7]
+
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num ** 0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def get_primes(n):
+    primes = []
+    for num in range(2, n + 1):
+        if is_prime(num):
+            primes.append(num)
+    return primes
+
+print(get_primes(10))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 9: Word Counter (While Loop + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>count_words(sentence)</code> that counts how many words are in a sentence (split by spaces).</p>
+            <pre><code>sentence = "Python is fun and powerful"
+print(count_words(sentence))  # Output: 5
+
+def count_words(sentence):
+    words = sentence.split()
+    return len(words)
+
+sentence = "Python is fun and powerful"
+print(count_words(sentence))
+            </code></pre>
+            <h4>Additional Example: Count Characters</h4>
+            <pre><code>sentence = "Hello World"
+print(count_chars(sentence))  # Output: 10
+
+def count_chars(sentence):
+    count = 0
+    i = 0
+    while i < len(sentence):
+        if sentence[i] != " ":
+            count += 1
+        i += 1
+    return count
+
+sentence = "Hello World"
+print(count_chars(sentence))
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Exercise 10: Multiplication Table (Nested Loops + Function)</h4>
+            <p><span class="emoji">📌</span> Write a function <code>multiplication_table(n)</code> that prints a multiplication table up to n x n.</p>
+            <pre><code>multiplication_table(3)
+# Output:
+# 1 2 3
+# 2 4 6
+# 3 6 9
+
+def multiplication_table(n):
+    for i in range(1, n + 1):
+        row = []
+        for j in range(1, n + 1):
+            row.append(i * j)
+        print(" ".join(map(str, row)))
+
+multiplication_table(3)
+            </code></pre>
+            <h4>Additional Example: Addition Table</h4>
+            <pre><code>addition_table(3)
+# Output:
+# 2 3 4
+# 3 4 5
+# 4 5 6
+
+def addition_table(n):
+    for i in range(1, n + 1):
+        row = []
+        for j in range(1, n + 1):
+            row.append(i + j)
+        print(" ".join(map(str, row)))
+
+addition_table(3)
+            </code></pre>
+        </div>
+        
+        <div class="note">
+            <p><strong>Key Takeaways:</strong></p>
+            <p><span class="emoji">✅</span> Functions + Loops help automate repetitive tasks.</p>
+            <p><span class="emoji">✅</span> Lists store data, and loops help process them.</p>
+            <p><span class="emoji">✅</span> Combining these concepts makes Python powerful!</p>
+        </div>
+        
+        <h3>Practice Challenges</h3>
+        <p>Try modifying these exercises or creating your own. Here are some ideas:</p>
+        <ol>
+            <li>Write a function that uses a for loop to find the smallest number in a list.</li>
+            <li>Create a function that uses a while loop to count how many vowels are in a string.</li>
+            <li>Write a function that combines two lists into one using a for loop.</li>
+            <li>Create a function that generates a list of odd numbers up to n Oswald
+            <li>Create a function that filters out numbers divisible by 3 from a list using a for loop.</li>
+            <li>Write a function that uses a while loop to create a list of squares of numbers from 1 to n.</li>
+        </ol>
+        <p><span class="emoji">🚀</span> Happy coding!</p>
+    </div>
+</body>
+</html>
