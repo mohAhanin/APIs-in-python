@@ -1,0 +1,325 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Beginner Course - Session 9: File Handling</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        h4 {
+            color: #2c3e50;
+        }
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
+        .example {
+            margin: 20px 0;
+        }
+        .note {
+            background: #e7f3fe;
+            border-left: 4px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Python Beginner Course - Session 9</h1>
+        <h2>Topic: Introduction to File Handling 📁</h2>
+        
+        <h3>Learning Objectives</h3>
+        <p>By the end of this session, you will be able to:</p>
+        <ul>
+            <li>Understand what a file is and why file handling is useful</li>
+            <li>Create and write to a text file using <code>open()</code></li>
+            <li>Read the contents of a file using <code>read()</code>, <code>readline()</code>, and <code>readlines()</code></li>
+            <li>Use basic file handling syntax: <code>open()</code>, <code>mode</code>, <code>write()</code>, <code>read()</code>, and <code>close()</code></li>
+            <li>Avoid overwriting and understand how modes (<code>"w"</code>, <code>"a"</code>, <code>"r"</code>) behave</li>
+        </ul>
+        
+        
+        <h3>1. Review </h3>
+        <p><span class="emoji">🔄</span> Quick review quiz/discussion:</p>
+        <ul>
+            <li>What is a loop?</li>
+            <li>When do we use <code>for</code> vs <code>while</code>?</li>
+            <li>How do you collect input and format it?</li>
+        </ul>
+        
+        <h3>2. Why Files? </h3>
+        <p><span class="emoji">📘</span> Files allow data <strong>persistence</strong>, meaning data remains even after a program ends. We can read and write <code>.txt</code> files using Python.</p>
+        <div class="note">
+            <p><strong>Discussion:</strong> What happens to variables when a program ends? Can you imagine a program saving your notes, scores, or preferences?</p>
+        </div>
+        
+        <h3>3. Writing to Files </h3>
+        <h4>Basic Syntax</h4>
+        <div class="example">
+            <p><span class="emoji">🧪</span> Example 1: Writing to a File (Overwrite Mode)</p>
+            <pre><code>file = open("myfile.txt", "w")  # "w" means write (overwrites file)
+file.write("Hello world!\n")
+file.write("This is line 2.\n")
+file.close()
+            </code></pre>
+            <p>Creates or overwrites <code>myfile.txt</code> with two lines.</p>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Appending to a File</h4>
+            <pre><code>file = open("log.txt", "a")  # "a" means append (adds to file)
+file.write("New log entry...\n")
+file.close()
+            </code></pre>
+            <p>Adds a new line to <code>log.txt</code> without overwriting existing content.</p>
+        </div>
+        
+        <div class="example">
+            <h4>Example 3: Writing a List to a File</h4>
+            <pre><code>fruits = ["apple", "banana", "orange"]
+file = open("fruits.txt", "w")
+for fruit in fruits:
+    file.write(f"{fruit}\n")
+file.close()
+            </code></pre>
+            <p>Writes each fruit on a new line in <code>fruits.txt</code>.</p>
+        </div>
+        
+        <div class="note">
+            <p><strong>File Modes:</strong></p>
+            <table>
+                <tr><th>Mode</th><th>Meaning</th></tr>
+                <tr><td>"w"</td><td>Write (overwrites file)</td></tr>
+                <tr><td>"a"</td><td>Append (adds to file)</td></tr>
+                <tr><td>"r"</td><td>Read only</td></tr>
+            </table>
+        </div>
+        
+        <h3>4. Reading from Files </h3>
+        <div class="example">
+            <h4>Example 1: Reading Entire File</h4>
+            <pre><code>file = open("myfile.txt", "r")
+content = file.read()
+print(content)
+file.close()
+            </code></pre>
+            <p>Reads all content as a single string.</p>
+        </div>
+        
+        <div class="example">
+            <h4>Example 2: Reading Line by Line</h4>
+            <pre><code>file = open("myfile.txt", "r")
+print(file.readline())  # Reads one line
+file.close()
+            </code></pre>
+            <p>Reads the first line of the file.</p>
+        </div>
+        
+        <div class="example">
+            <h4>Example 3: Reading All Lines as a List</h4>
+            <pre><code>file = open("myfile.txt", "r")
+lines = file.readlines()
+print(lines)  # Prints list of lines
+file.close()
+            </code></pre>
+            <p>Reads all lines into a list.</p>
+        </div>
+        
+        <div class="example">
+            <h4>Example 4: Looping Through Lines</h4>
+            <pre><code>file = open("myfile.txt", "r")
+for line in file:
+    print(line.strip())  # strip() removes trailing newlines
+file.close()
+            </code></pre>
+            <p>Reads and prints each line without extra newlines.</p>
+        </div>
+        
+        <div class="note">
+            <p><strong>Tip:</strong> <code>.read()</code> returns a big string, <code>.readlines()</code> returns a list of lines, and <code>.readline()</code> reads one line at a time.</p>
+        </div>
+        
+        <h3>5. Guided Activity: Message Logger </h3>
+        <p><span class="emoji">🛠️</span> Create a program that:</p>
+        <ol>
+            <li>Asks the user for their name and message</li>
+            <li>Appends the input to <code>messages.txt</code> in the format: <code>[Name]: Message</code></li>
+            <li>Prints: <code>"Your message has been saved!"</code></li>
+        </ol>
+        <div class="example">
+            <h4>Solution</h4>
+            <pre><code>name = input("Enter your name: ")
+message = input("Enter your message: ")
+file = open("messages.txt", "a")
+file.write(f"[{name}]: {message}\n")
+file.close()
+print("Your message has been saved!")
+            </code></pre>
+            <p><strong>Example Output in File:</strong></p>
+            <pre>
+[Ali]: Hello everyone!
+[Sara]: Python is cool.
+            </pre>
+        </div>
+        
+        <div class="example">
+            <h4>Extension: Read and Display Messages</h4>
+            <pre><code>file = open("messages.txt", "r")
+print("All messages:")
+for line in file:
+    print(line.strip())
+file.close()
+            </code></pre>
+            <p>Reads and prints all messages from <code>messages.txt</code>.</p>
+        </div>
+        
+        <h3>6. Recap & Homework </h3>
+        <p><span class="emoji">🧠</span> Recap Questions:</p>
+        <ul>
+            <li>When do you use <code>"w"</code> vs <code>"a"</code>?</li>
+            <li>What does <code>read()</code> return?</li>
+            <li>What happens if the file doesn’t exist in <code>"r"</code> mode? (Note: We’ll skip error handling for now.)</li>
+        </ul>
+        
+        <h4>Homework: Build a Simple Journal Program</h4>
+        <p><span class="emoji">🏠</span> Write a program that:</p>
+        <ul>
+            <li>Asks the user for a title and entry</li>
+            <li>Saves it in a file named <code>journal.txt</code></li>
+            <li>Appends every entry in the format:</li>
+        </ul>
+        <pre>
+=== Title ===
+Entry text here
+----------------------------
+        </pre>
+        <div class="example">
+            <h4>Homework Solution</h4>
+            <pre><code>title = input("Enter your journal title: ")
+entry = input("Enter your journal entry: ")
+file = open("journal.txt", "a")
+file.write(f"=== {title} ===\n")
+file.write(f"{entry}\n")
+file.write("----------------------------\n")
+file.close()
+print("Journal entry saved!")
+            </code></pre>
+        </div>
+        
+        <div class="example">
+            <h4>Additional Homework Example: Read Journal Entries</h4>
+            <pre><code>file = open("journal.txt", "r")
+print("Your journal entries:")
+print(file.read())
+file.close()
+            </code></pre>
+            <p>Reads and displays all journal entries.</p>
+        </div>
+        
+        <div class="note">
+            <p><strong>Key Takeaways:</strong></p>
+            <p><span class="emoji">✅</span> File handling allows data persistence.</p>
+            <p><span class="emoji">✅</span> Use <code>"w"</code> to overwrite, <code>"a"</code> to append, and <code>"r"</code> to read.</p>
+            <p><span class="emoji">✅</span> Always close files with <code>close()</code> to save changes.</p>
+        </div>
+        
+        <h3>Practice Challenges</h3>
+        <p>Try these to reinforce your skills:</p>
+        <ol>
+            <li>Write a program that saves a list of 5 favorite foods to a file, one per line.</li>
+            <li>Create a program that reads a file and counts how many lines it has.</li>
+            <li>Write a program that appends the current date (hardcoded for now) to a file.</li>
+            <li>Create a program that reads a file and prints only the lines containing a specific word.</li>
+        </ol>
+        <p><span class="emoji">🚀</span> Happy coding!</p>
+    </div>
+</body>
+</html>
