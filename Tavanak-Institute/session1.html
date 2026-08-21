@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جزوه جلسه اول Python — مقدمه‌ای بر برنامه‌نویسی</title>
+<style>
+:root{
+  --ink:#202124;
+  --muted:#5f6368;
+  --line:#dadce0;
+  --soft:#f7f8fa;
+  --code:#202124;
+  --accent:#5b4bdb;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#f1f3f5;
+  color:var(--ink);
+  font-family:"Vazirmatn","Tahoma","Segoe UI",Arial,sans-serif;
+  line-height:1.95;
+  direction:rtl;
+}
+.page{
+  width:min(900px, calc(100% - 32px));
+  margin:28px auto;
+  background:#fff;
+  padding:52px 64px;
+  box-shadow:0 3px 18px rgba(0,0,0,.08);
+}
+.cover{
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  page-break-after:always;
+}
+.cover h1{font-size:38px;margin:0 0 14px}
+.cover h2{font-size:24px;color:var(--muted);border:0;margin:0}
+.cover .tag{
+  display:inline-block;
+  margin:28px auto 0;
+  padding:8px 18px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  color:var(--accent);
+}
+h1,h2,h3{line-height:1.45}
+h2{
+  margin-top:42px;
+  padding-bottom:8px;
+  border-bottom:2px solid var(--line);
+  font-size:25px;
+}
+h3{font-size:19px;margin-top:28px}
+p{margin:10px 0}
+ul,ol{padding-right:28px}
+li{margin:6px 0}
+.callout{
+  background:var(--soft);
+  border-right:5px solid var(--accent);
+  padding:14px 18px;
+  margin:18px 0;
+  border-radius:8px;
+}
+.question{
+  background:#fbf9ff;
+  border:1px solid #ddd8ff;
+  padding:16px 18px;
+  margin:18px 0;
+  border-radius:8px;
+}
+.exercise{
+  background:#f6fbff;
+  border:1px solid #cfe8ff;
+  padding:18px;
+  margin:20px 0;
+  border-radius:8px;
+}
+.code-title,.output-title{
+  font-weight:700;
+  margin-top:16px;
+}
+pre{
+  direction:ltr;
+  text-align:left;
+  unicode-bidi:embed;
+  white-space:pre-wrap;
+  word-break:break-word;
+  font-family:"Cascadia Code","Consolas","DejaVu Sans Mono",monospace;
+  font-size:14px;
+  line-height:1.55;
+  padding:16px 18px;
+  margin:8px 0 16px;
+  border-radius:8px;
+  overflow:auto;
+}
+.code{background:#202124;color:#f5f5f5}
+.output{background:#f3f4f6;color:#202124;border:1px solid #e1e3e6}
+table{width:100%;border-collapse:collapse;margin:18px 0}
+th,td{border:1px solid var(--line);padding:10px 12px}
+th{background:#f5f5f5}
+.ltr{direction:ltr;unicode-bidi:embed;display:inline-block}
+.badge{
+  display:inline-block;
+  direction:ltr;
+  font-family:monospace;
+  background:#eee;
+  padding:0 5px;
+  border-radius:4px;
+}
+.small{color:var(--muted);font-size:.92em}
+@media(max-width:700px){
+  .page{padding:28px 22px;width:calc(100% - 16px);margin:8px auto}
+  .cover h1{font-size:30px}
+}
+@media print{
+  body{background:#fff}
+  .page{width:100%;margin:0;box-shadow:none;padding:18mm 15mm}
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+<section class="cover">
+  <h1>جزوه جلسه اول</h1>
+  <h2>مقدمه‌ای بر برنامه‌نویسی و مبانی Python</h2>
+  <p class="small" style="margin-top:28px">از اولین دستور Python تا ساخت یک برنامه تعاملی کوچک</p>
+</section>
+
+<h2>اهداف یادگیری</h2>
+<p>تا پایان این جلسه باید بتوانی:</p>
+<ol>
+  <li>توضیح بدهی برنامه‌نویسی چیست.</li>
+  <li>اولین برنامه Python خودت را اجرا کنی.</li>
+  <li>با استفاده از متغیرها اطلاعات را ذخیره کنی.</li>
+  <li>از کاربر ورودی دریافت کنی.</li>
+  <li>خروجی برنامه را نمایش بدهی و آن را قالب‌بندی کنی.</li>
+</ol>
+
+<h2>۱. برنامه‌نویسی چیست؟</h2>
+<p>برنامه‌نویسی یعنی نوشتن دستورهایی که کامپیوتر بتواند آن‌ها را اجرا کند. کامپیوتر خودش نمی‌داند ما چه می‌خواهیم؛ باید مراحل کار را دقیق و به ترتیب به آن بگوییم.</p>
+
+
+
+<div class="callout">
+  <b>تشبیه ساده:</b> برنامه‌نویسی شبیه نوشتن دستور پخت غذاست. دستور پخت باید مرحله‌به‌مرحله و دقیق باشد؛ برنامه هم همین‌طور.
+</div>
+
+
+
+<h2>۲. Python در دنیای واقعی</h2>
+<p>Python فقط یک زبان برای تمرین‌های کلاس نیست. از آن در حوزه‌های مختلف استفاده می‌شود:</p>
+<ul>
+  <li>🕹️ <b>بازی‌ها:</b> توسعه بازی و ابزارهایی مثل Pygame.</li>
+  <li>🤖 <b>هوش مصنوعی و رباتیک:</b> یادگیری ماشین و ساخت سیستم‌های هوشمند.</li>
+  <li>🌐 <b>توسعه وب:</b> ساخت بخش Back-end وب‌سایت‌ها با ابزارهایی مانند Django و Flask.</li>
+  <li>📊 <b>علم داده:</b> تحلیل داده‌ها و ساخت نمودارها.</li>
+  <li>💸 <b>مالی:</b> تحلیل ریسک و الگوریتم‌های مالی.</li>
+</ul>
+
+<div class="question"><b>سؤال کلاسی:</b> کدام حوزه برایت جذاب‌تر است؟ اگر با Python می‌توانستی هر چیزی بسازی، چه چیزی می‌ساختی؟</div>
+
+<h2>۳. این دوره چه چیزهایی دارد؟</h2>
+<p>هدف دوره این است که کم‌کم از نوشتن دستورهای ساده به سمت حل مسئله و ساخت پروژه برویم:</p>
+<ol>
+  <li>هفته اول: Python و Hello World</li>
+  <li>هفته دوم: متغیرها و Stringها</li>
+  <li>هفته سوم: شرط‌ها و تصمیم‌گیری</li>
+  <li>هفته چهارم: حلقه‌ها و تکرار</li>
+  <li>هفته پنجم: Listها و مجموعه‌های داده</li>
+  <li>هفته ششم: Functionها</li>
+  <li>هفته هفتم و هشتم: پروژه‌ها 🚀</li>
+</ol>
+
+<div class="callout"><b>یادآوری:</b> برای برنامه‌نویس شدن لازم نیست نابغه ریاضی یا متخصص کامپیوتر باشی. کنجکاوی، تمرین و اشتباه کردن بخشی از مسیر یادگیری است.</div>
+
+<h2>۴. کامپیوتر چگونه کد ما را اجرا می‌کند؟</h2>
+<p>ما کد را می‌نویسیم و Python آن را تفسیر و اجرا می‌کند تا نتیجه‌ای در کامپیوتر ایجاد شود.</p>
+<pre class="code">print("Hello")</pre>
+<p style="text-align:center">⬇</p>
+<p style="text-align:center"><b>Python Interpreter</b></p>
+<p style="text-align:center">⬇</p>
+<p style="text-align:center">نمایش <span class="ltr">Hello</span> روی صفحه</p>
+
+<h2>۵. اولین برنامه: Hello, World!</h2>
+<p>در بسیاری از دوره‌های برنامه‌نویسی، یکی از اولین برنامه‌ها نمایش دادن عبارت «سلام دنیا» است.</p>
+
+<div class="code-title">کد</div>
+<pre class="code">print("Hello, world!")</pre>
+<div class="output-title">خروجی</div>
+<pre class="output">Hello, world!</pre>
+
+<h3>این کد چه کاری انجام می‌دهد؟</h3>
+<ul>
+  <li><span class="badge">print()</span> یک تابع داخلی Python برای نمایش اطلاعات است.</li>
+  <li><span class="badge">"Hello, world!"</span> یک <b>String</b> یا داده متنی است.</li>
+  <li>علامت‌های نقل‌قول نشان می‌دهند که چیزی که نوشته‌ایم متن است.</li>
+</ul>
+
+<div class="exercise">
+  <b>تمرین ۱ — Say Hello 👋</b>
+  <p>سه دستور <span class="badge">print()</span> بنویس و خودت را معرفی کن. می‌توانی از Emoji هم استفاده کنی.</p>
+</div>
+
+<pre class="code">print("Hello, my name is Chad!")</pre>
+<pre class="output">Hello, my name is Chad!</pre>
+
+<pre class="code">print("Hi there!")
+print("I'm learning Python.")
+print("🚀 Let's go!")</pre>
+<pre class="output">Hi there!
+I'm learning Python.
+🚀 Let's go!</pre>
+
+<div class="exercise">
+  <b>حالا نوبت توست!</b>
+  <p>سه <span class="badge">print()</span> بنویس که نام، علاقه و یک جمله درباره یادگیری Python را نمایش دهد.</p>
+</div>
+
+<pre class="code">print("👋 Hi, I'm Leo.")
+print("🎮 I love video games.")
+print("🐍 I'm learning Python!")</pre>
+<pre class="output">👋 Hi, I'm Leo.
+🎮 I love video games.
+🐍 I'm learning Python!</pre>
+
+<h2>۶. متغیر چیست؟</h2>
+<p>متغیر را می‌توان مثل یک ظرف دارای برچسب تصور کرد. داخل این ظرف یک مقدار قرار می‌دهیم و با استفاده از نام آن، بعداً به مقدار دسترسی پیدا می‌کنیم.</p>
+
+<pre class="code">name = "Alex"</pre>
+
+<p>در اینجا <span class="badge">name</span> نام متغیر و <span class="badge">"Alex"</span> مقدار آن است.</p>
+
+<pre class="code">name = "Alice"
+age = 12
+height = 4.5</pre>
+
+<table>
+<tr><th>مقدار</th><th>نوع داده</th><th>توضیح</th></tr>
+<tr><td><span class="ltr">"Alice"</span></td><td><span class="ltr">str / string</span></td><td>متن</td></tr>
+<tr><td><span class="ltr">12</span></td><td><span class="ltr">int / integer</span></td><td>عدد صحیح</td></tr>
+<tr><td><span class="ltr">4.5</span></td><td><span class="ltr">float</span></td><td>عدد اعشاری</td></tr>
+</table>
+
+<h2>۷. یک نکته مهم: نوع داده‌ها</h2>
+<p>Python بین متن و عدد تفاوت می‌گذارد. <span class="badge">12</span> یک عدد است، اما <span class="badge">"12"</span> یک متن است.</p>
+
+<pre class="code">Name = "John"     # Python is case-sensitive
+age = "12" + 1    # Can't mix string and number</pre>
+
+<pre class="output">TypeError: can only concatenate str (not "int") to str</pre>
+
+<p>همچنین Python به حروف بزرگ و کوچک حساس است؛ بنابراین <span class="badge">name</span> و <span class="badge">Name</span> دو نام متفاوت هستند.</p>
+
+<div class="callout"><b>قانون خوب:</b> نام متغیر را واضح و معنی‌دار انتخاب کن. مثلاً <span class="badge">student_name</span> از <span class="badge">x</span> قابل فهم‌تر است.</div>
+
+<h2>۸. یک تمرین با متغیرها</h2>
+<div class="exercise">
+  <b>تمرین ۲</b>
+  <p>برنامه‌ای بنویس که این اطلاعات را ذخیره و نمایش دهد:</p>
+  <ul>
+    <li>Name — رشته</li>
+    <li>Age — عدد صحیح</li>
+    <li>Height — عدد اعشاری</li>
+    <li>Hobby — رشته</li>
+  </ul>
+</div>
+
+<pre class="code">my_name = "ali"
+my_age = 13
+my_height = 5.2
+my_hobby = "drawing"
+
+print("My name is", my_name)
+print("I am", my_age, "years old.")
+print("My height is", my_height)
+print("I love", my_hobby)</pre>
+
+<pre class="output">My name is ali
+I am 13 years old.
+My height is 5.2
+I love drawing</pre>
+
+<h2>۹. f-string؛ راه ساده‌تر برای ساخت متن</h2>
+<p>با <span class="badge">f-string</span> می‌توانیم مقدار متغیرها را به‌سادگی داخل یک جمله قرار دهیم. کافی است قبل از رشته حرف <span class="badge">f</span> بگذاریم و متغیر را داخل <span class="badge">{ }</span> بنویسیم.</p>
+
+<pre class="code">print(f"My name is {my_name} and I love {my_hobby}.")</pre>
+<pre class="output">My name is ali and I love drawing.</pre>
+
+<div class="exercise">
+  <b>تمرین ۳ — سن سال آینده</b>
+  <p>سن خودت را در یک متغیر ذخیره کن و برنامه‌ای بنویس که سن تو در سال آینده را حساب کند.</p>
+</div>
+
+<pre class="code">age = 13
+next_year = age + 1
+print("Next year, I’ll be", next_year)</pre>
+<pre class="output">Next year, I’ll be 14</pre>
+
+<h2>۱۰. دریافت اطلاعات از کاربر با input</h2>
+<p>تا اینجا اطلاعات را خودمان داخل برنامه نوشته‌ایم. برنامه‌های تعاملی باید بتوانند از کاربر سؤال بپرسند و پاسخ او را دریافت کنند.</p>
+<p>تابع <span class="badge">input()</span> برای دریافت ورودی از کاربر استفاده می‌شود.</p>
+
+<pre class="code">name = input("What is your name? ")
+print("Hello, " + name + "!")</pre>
+<pre class="output">What is your name? ali
+Hello, ali!</pre>
+
+<pre class="code">color = input("What is your favorite color? ")
+print("Wow, I like " + color + " too!")</pre>
+<pre class="output">What is your favorite color? red
+Wow, I like red too!</pre>
+
+<div class="callout">
+  <b>نکته بسیار مهم:</b> خروجی <span class="badge">input()</span> به صورت <span class="ltr">string</span> دریافت می‌شود؛ حتی اگر کاربر یک عدد تایپ کند.
+</div>
+
+<h2>۱۱. چرا این برنامه خطا می‌دهد؟</h2>
+
+<pre class="code">age = input("How old are you? ")
+print(age + 1)  # 🚫 Error!</pre>
+
+<pre class="output">How old are you? 12
+TypeError: can only concatenate str (not "int") to str</pre>
+
+<p>کاربر <span class="badge">12</span> را وارد کرده، اما Python آن را به صورت متن یعنی <span class="badge">"12"</span> دریافت کرده است. بنابراین نمی‌توانیم آن را مستقیماً با عدد <span class="badge">1</span> جمع کنیم.</p>
+
+<p>راه‌حل: متن را به عدد صحیح تبدیل کنیم.</p>
+
+<pre class="code">age = int(input("How old are you? "))
+print("Next year, you'll be", age + 1)</pre>
+
+<pre class="output">How old are you? 15
+Next year, you'll be 16</pre>
+
+<p>اینجا <span class="badge">int()</span> مقدار واردشده را به یک عدد صحیح تبدیل می‌کند.</p>
+
+<h2>۱۲. تمرین: برنامه پرسش‌نامه</h2>
+<div class="exercise">
+  <p>برنامه‌ای بنویس که ۲ یا ۳ سؤال از کاربر بپرسد و بعد پاسخ‌های او را در یک جمله ترکیب کند.</p>
+</div>
+
+<pre class="code">food = input("What's your favorite food? ")
+animal = input("What's your favorite animal? ")
+
+print("So you like " + food + " and " + animal + "? Interesting combo!")</pre>
+
+<pre class="output">What's your favorite food? mirza ghasemi
+What's your favorite animal? kittens
+So you like mirza ghasemi and kittens? Interesting combo!</pre>
+
+<pre class="code">name = input("Your name: ")
+hobby = input("Your hobby: ")
+
+print(f"Hi {name}, I heard you enjoy {hobby}!")</pre>
+
+<pre class="output">Your name: rex
+Your hobby: basketball
+Hi rex, I heard you enjoy basketball!</pre>
+
+<h2>۱۳. تمرین: داستان‌ساز 🎭</h2>
+<p>از کاربر چند کلمه بگیر و با استفاده از آن‌ها یک جمله یا داستان کوتاه بساز.</p>
+
+<pre class="code">animal = input("Enter an animal: ")
+adjective = input("Enter an adjective: ")
+verb = input("Enter a verb: ")
+
+print("Today I saw a " + adjective + " " + animal + " " + verb + " in the park.")</pre>
+
+<pre class="output">Enter an animal: re
+Enter an adjective: s
+Enter a verb: fd
+Today I saw a s re fd in the park.</pre>
+
+<p>همین خروجی را می‌توان با f-string خواناتر نوشت:</p>
+
+<pre class="code">print(f"Today I saw a {adjective} {animal} {verb} in the park.")</pre>
+
+<pre class="output">Today I saw a s re fd in the park.</pre>
+
+<h2>۱۴. یک داستان دو جمله‌ای</h2>
+
+<pre class="code">name = input("Name: ")
+place = input("Place: ")
+food = input("Favorite food: ")
+emotion = input("Emotion: ")
+
+print(f"One day, {name} went to {place} and ate {food}.")
+print(f"It made them feel very {emotion}!")</pre>
+
+<pre class="output">Name: jhv
+Place: ug
+Favorite food: hjbkk
+Emotion: jb
+One day, jhv went to ug and ate hjbkk.
+It made them feel very jb!</pre>
+
+<h2>۱۵. پروژه کوچک جلسه اول 🚀</h2>
+<div class="exercise">
+  <h3>My Fun Facts — Info Hunt 🔎</h3>
+  <p>برنامه‌ای بساز که از کاربر اطلاعات زیر را بگیرد:</p>
+  <ul>
+    <li>نام</li>
+    <li>یک واقعیت جالب درباره یک کشور</li>
+    <li>یک عدد تصادفی</li>
+    <li>نام یک دانشمند</li>
+    <li>نام یک حیوان عجیب</li>
+  </ul>
+  <p>سپس با این اطلاعات یک داستان خلاقانه و بامزه در ۳ تا ۴ جمله بساز.</p>
+  <p><b>قوانین پروژه:</b></p>
+  <ul>
+    <li>حداقل ۵ متغیر استفاده کن.</li>
+    <li>حداقل ۲ دستور <span class="badge">print()</span> داشته باش.</li>
+    <li>اطلاعات را با <span class="badge">input()</span> دریافت کن.</li>
+    <li>برای ترکیب اطلاعات از <span class="badge">f-string</span> استفاده کن.</li>
+    <li>حداقل یک ورودی عددی را با <span class="badge">int()</span> به عدد تبدیل کن و روی آن محاسبه انجام بده.</li>
+  </ul>
+</div>
+
+<h2>جمع‌بندی جلسه</h2>
+<ul>
+  <li>برنامه‌نویسی یعنی دادن دستورهای دقیق به کامپیوتر.</li>
+  <li>Python زبانی خوانا و پرکاربرد است.</li>
+  <li><span class="badge">print()</span> برای نمایش خروجی استفاده می‌شود.</li>
+  <li>متغیرها برای نگهداری داده‌ها هستند.</li>
+  <li>داده‌ها انواع مختلفی مثل <span class="ltr">str</span>، <span class="ltr">int</span> و <span class="ltr">float</span> دارند.</li>
+  <li><span class="badge">input()</span> ورودی را از کاربر دریافت می‌کند و آن را به صورت متن برمی‌گرداند.</li>
+  <li><span class="badge">int()</span> می‌تواند یک مقدار متنیِ عددی را به عدد صحیح تبدیل کند.</li>
+  <li><span class="badge">f-string</span> ساختن جمله‌های دارای متغیر را ساده می‌کند.</li>
+  <li>خطا کردن طبیعی است؛ مهم این است که بتوانیم خطا را بخوانیم و دلیل آن را پیدا کنیم.</li>
+</ul>
+
+<div class="callout">
+  <b>یادت باشد:</b> قرار نیست کدها را حفظ کنی. هدف این جلسه این است که بفهمی هر خط چه کاری انجام می‌دهد و بتوانی با تغییر دادن آن، برنامه خودت را بسازی.
+</div>
+
+<h2>تمرین خانه 🏠</h2>
+<p>برنامه‌ای با عنوان <span class="badge">My Future Self</span> بساز. برنامه باید نام، سن، شهر، علاقه، شغل مورد علاقه در آینده و یک عدد دلخواه را از کاربر بگیرد. سپس حداقل سه جمله درباره کاربر چاپ کن و یک محاسبه ساده نیز انجام بده.</p>
+
+</main>
+</body>
+</html>

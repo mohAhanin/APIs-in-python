@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جلسه دوم | عملگرهای حسابی در پایتون</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink: #ff6fa5;
+    --purple: #8b5cf6;
+    --purple-dark: #6d28d9;
+    --bg: #fdf6fb;
+    --card: #ffffff;
+    --ink: #34213d;
+    --muted: #7a6a85;
+    --code-bg: #2b2140;
+    --code-ink: #f3e8ff;
+    --green: #22c55e;
+    --yellow: #fef3c7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Vazirmatn', sans-serif;
+    background: linear-gradient(180deg, #fff0f7 0%, var(--bg) 300px, var(--bg) 100%);
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  .wrap{max-width: 880px; margin: 0 auto; padding: 24px 20px 80px;}
+
+  header.hero{
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align:center;
+    color:white;
+    box-shadow: 0 20px 40px -15px rgba(139,92,246,0.5);
+    margin-bottom: 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"➗✖️➕✨";
+    position:absolute;
+    font-size: 90px;
+    opacity:0.15;
+    top:-20px;
+    left:-10px;
+    letter-spacing: 20px;
+  }
+  header.hero h1{
+    font-size: 30px;
+    margin: 0 0 8px;
+    font-weight:800;
+  }
+  header.hero p{
+    margin:0;
+    font-size:16px;
+    opacity:0.95;
+  }
+  .badge{
+    display:inline-block;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 5px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  section.card{
+    background: var(--card);
+    border-radius: 22px;
+    padding: 26px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 6px 20px -10px rgba(139,92,246,0.25);
+    border: 1px solid #f3e6f5;
+  }
+
+  h2.section-title{
+    font-size: 22px;
+    color: var(--purple-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:0;
+    border-bottom: 2px dashed #f0d9f5;
+    padding-bottom: 12px;
+  }
+  h3{
+    color:#a3268a;
+    font-size:17px;
+    margin-bottom:6px;
+  }
+
+  ul, ol{padding-right: 22px; margin: 10px 0;}
+  li{margin-bottom:6px;}
+
+  table{
+    width:100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14.5px;
+    overflow:hidden;
+    border-radius: 12px;
+  }
+  th, td{
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #f0e2f4;
+  }
+  th{
+    background: linear-gradient(90deg, #fbeaf6, #f3e8ff);
+    color: var(--purple-dark);
+    font-weight:700;
+  }
+  tr:nth-child(even){ background: #fdf8fd; }
+  td code, th code{ direction: ltr; display:inline-block; }
+
+  .quiz{
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border: 1px dashed #f0c94a;
+    margin-top: 12px;
+  }
+  .quiz p{margin:4px 0;}
+
+  .fun-fact{
+    background: linear-gradient(135deg, #fff0f9, #f3e8ff);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border-right: 4px solid var(--pink);
+    margin: 14px 0;
+  }
+  .fun-fact b{color:#c026a3;}
+
+  .recap{
+    background:#f5f3ff;
+    border-radius:16px;
+    padding:14px 18px;
+    border-right:4px solid var(--purple);
+    margin-bottom:8px;
+    font-size:14.5px;
+  }
+  .recap b{color:var(--purple-dark);}
+
+  .code-block{
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 14.5px;
+    direction: ltr;
+    text-align: left;
+    overflow-x:auto;
+    margin: 10px 0;
+    white-space: pre-wrap;
+    line-height:1.7;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .code-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color: #d8b4fe;
+    font-size:12px;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .comment{color:#9ca3af;}
+  .kw{color:#fca5f1;}
+  .num-tok{color:#93c5fd;}
+  .op{color:#fbbf24;}
+
+  .output-block{
+    background:#0f172a;
+    color:#4ade80;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family:'Courier New', monospace;
+    font-size:14.5px;
+    direction: ltr;
+    text-align:left;
+    margin: -4px 0 12px;
+    white-space: pre-wrap;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .output-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+
+  .tip{
+    background:#ecfdf5;
+    border-right:4px solid var(--green);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14.5px;
+    margin:12px 0;
+  }
+  .tip b{color:#16a34a;}
+
+  .activity{
+    background: linear-gradient(135deg,#eef2ff,#fdf4ff);
+    border: 2px dashed var(--purple);
+    border-radius:18px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .activity h3{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--purple-dark);
+  }
+
+  .homework{
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 2px solid #fbbf24;
+    border-radius: 22px;
+    padding: 22px 24px;
+  }
+  .homework h2.section-title{ color:#b45309; border-bottom-color:#fde68a; }
+  .homework h3{ color:#b45309; }
+  .homework .task{
+    background:white;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:12px;
+    border-right:4px solid #f59e0b;
+  }
+  .homework .task b{color:#92400e;}
+
+  footer{
+    text-align:center;
+    color: var(--muted);
+    font-size:13px;
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">جلسه ۲ از دوره پایتون 🐍</span>
+    <h1>عملگرهای حسابی در پایتون</h1>
+    <p>جزوه‌ی درسی — ویژه‌ی نوجوانان کنجکاو 💜</p>
+  </header>
+
+  <section class="card">
+    <h2 class="section-title">🔁 یادآوری کوتاه از جلسه‌ی قبل</h2>
+    <div class="recap">
+      یادته گفتیم <b>متغیر</b> مثل یک جعبه‌ست که یک مقدار رو نگه می‌داره؟ مثلاً <code style="direction:ltr;display:inline-block;">a = 8</code> یعنی داخل جعبه‌ای به اسم <code style="direction:ltr;display:inline-block;">a</code> عدد ۸ رو گذاشتیم. توی این جلسه یاد می‌گیریم چطور با این عددها کار حسابی انجام بدیم. 🎯
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">➕ عملگرهای حسابی</h2>
+    <p>برای انجام عملیات ریاضی روی عددها، پایتون یک سری علامت خاص به نام <b>عملگر (operator)</b> داره. بیا با یک مثال کامل همه‌شون رو ببینیم:</p>
+
+    <div class="code-block"><span class="label">کد</span>a = <span class="num-tok">8</span>
+b = <span class="num-tok">3</span>
+
+<span class="comment"># addition</span>
+<span class="kw">print</span>(<span class="op">'Sum: '</span>, a + b)  <span class="comment"># 11</span>
+
+<span class="comment"># subtraction</span>
+<span class="kw">print</span>(<span class="op">'Subtraction: '</span>, a - b)  <span class="comment"># 5</span>
+
+<span class="comment"># multiplication</span>
+<span class="kw">print</span>(<span class="op">'Multiplication: '</span>, a * b)  <span class="comment"># 24</span>
+
+<span class="comment"># division</span>
+<span class="kw">print</span>(<span class="op">'Division: '</span>, a / b)  <span class="comment"># 2.6666666666666665</span>
+
+<span class="comment"># floor division</span>
+<span class="kw">print</span>(<span class="op">'Floor Division: '</span>, a // b)  <span class="comment"># 2</span>
+
+<span class="comment"># modulo</span>
+<span class="kw">print</span>(<span class="op">'Modulo: '</span>, a % b)   <span class="comment"># 2</span>
+
+<span class="comment"># a to the power b</span>
+<span class="kw">print</span>(<span class="op">'Power: '</span>, a ** b)  <span class="comment"># 512</span></div>
+
+    <div class="output-block"><span class="label">خروجی</span>Sum:  11
+Subtraction:  5
+Multiplication:  24
+Division:  2.6666666666666665
+Floor Division:  2
+Modulo:  2
+Power:  512</div>
+
+    <h3>🔍 توضیح هر عملگر</h3>
+    <table>
+      <tr><th>عملگر</th><th>نام</th><th>توضیح</th><th>مثال (a=8, b=3)</th></tr>
+      <tr><td><code>+</code></td><td>جمع</td><td>دو عدد رو با هم جمع می‌کنه</td><td><code> = 11 </code>  a + b</td></tr>
+      <tr><td><code>-</code></td><td>تفریق</td><td>عدد دوم رو از اولی کم می‌کنه</td><td><code> = 5 </code> a - b</td></tr>
+      <tr><td><code>*</code></td><td>ضرب</td><td>دو عدد رو در هم ضرب می‌کنه</td><td><code> = 24 </code>  a * b </td></tr>
+      <tr><td><code>/</code></td><td>تقسیم</td><td>همیشه جواب اعشاری برمی‌گردونه</td><td><code> = 2.666... </code> a / b </td></tr>
+      <tr><td><code>//</code></td><td>تقسیم صحیح</td><td>فقط قسمت صحیح جواب تقسیم رو می‌ده</td><td><code> = 2 </code> a // b </td></tr>
+      <tr><td><code>%</code></td><td>باقی‌مانده (مدولو)</td><td>باقی‌مانده‌ی تقسیم رو می‌ده</td><td><code> = 2 </code> a % b</td></tr>
+      <tr><td><code>**</code></td><td>توان</td><td>عدد اول رو به توان عدد دوم می‌رسونه</td><td><code>= 512</code> a ** b </td></tr>
+    </table>
+
+    <div class="tip">💡 <b>نکته‌ی طلایی:</b> عملگر <code style="direction:ltr;display:inline-block;">/</code> همیشه جواب رو به‌صورت اعشاری (float) برمی‌گردونه، حتی اگه بخش‌پذیر باشه! مثلاً <code style="direction:ltr;display:inline-block;">6 / 3</code> می‌شه <code style="direction:ltr;display:inline-block;">2.0</code> نه <code style="direction:ltr;display:inline-block;">2</code>.</div>
+
+    <div class="fun-fact">
+      🎯 <b>کجا به کارمون میاد؟</b> عملگر <code style="direction:ltr;display:inline-block;">%</code> (باقی‌مانده) خیلی کاربردیه، مثلاً برای فهمیدن اینکه یک عدد زوجه یا فرد! اگه <code style="direction:ltr;display:inline-block;">number % 2</code> برابر با صفر بشه، یعنی عدد زوجه.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">⚡ عملگرهای تخصیص ترکیبی</h2>
+    <p>گاهی می‌خوایم مقدار یک متغیر رو تغییر بدیم و نتیجه رو دوباره توی همون متغیر بریزیم. به‌جای نوشتن کامل، پایتون یک میان‌بر کوتاه‌تر بهمون می‌ده:</p>
+
+    <table>
+      <tr><th>عملگر</th><th>توضیح</th><th>مثال</th><th>معادل کامل</th></tr>
+      <tr><td><code>=</code></td><td>تخصیص ساده</td><td><code>a = 3</code></td><td><code>a = 3</code></td></tr>
+      <tr><td><code>+=</code></td><td>اضافه کردن و تخصیص</td><td><code>a += 1</code></td><td><code>a = a + 1</code></td></tr>
+      <tr><td><code>-=</code></td><td>کم کردن و تخصیص</td><td><code>a -= 4</code></td><td><code>a = a - 4</code></td></tr>
+      <tr><td><code>*=</code></td><td>ضرب کردن و تخصیص</td><td><code>a *= 2</code></td><td><code>a = a * 2</code></td></tr>
+      <tr><td><code>/=</code></td><td>تقسیم کردن و تخصیص</td><td><code>a /= 5</code></td><td><code>a = a / 5</code></td></tr>
+      <tr><td><code>%=</code></td><td>باقی‌مانده گرفتن و تخصیص</td><td><code>a %= 10</code></td><td><code>a = a % 10</code></td></tr>
+      <tr><td><code>**=</code></td><td>توان‌رسانی و تخصیص</td><td><code>a **= 2</code></td><td><code>a = a ** 2</code></td></tr>
+    </table>
+
+    <p>بیایم با یک مثال ببینیم چطور کار می‌کنن:</p>
+    <div class="code-block"><span class="label">کد</span>score = <span class="num-tok">10</span>
+score += <span class="num-tok">5</span>   <span class="comment"># score = score + 5</span>
+<span class="kw">print</span>(<span class="op">"Score after bonus:"</span>, score)</div>
+    <div class="output-block"><span class="label">خروجی</span>Score after bonus: 15</div>
+
+    <div class="tip">💡 عملگرهای تخصیص ترکیبی خیلی توی بازی‌ها و شمارنده‌ها کاربرد دارن؛ مثلاً برای اضافه کردن امتیاز یا کم کردن جون بازیکن.</div>
+  </section>
+
+  <section class="card homework">
+    <h2 class="section-title">📓 تکلیف جلسه دوم</h2>
+    <p>این تمرین‌ها رو توی یک فایل پایتون بنویس و اجرا کن. هدف اینه که با عملگرهای حسابی و تخصیصی راحت کار کنی. 💪</p>
+
+    <div class="task">
+      <b>۱. ماشین‌حساب دو عددی</b>
+      <p>یک برنامه بنویس که از کاربر دو عدد بگیره (با <code style="direction:ltr;display:inline-block;">input()</code> و <code style="direction:ltr;display:inline-block;">int()</code>) و جمع، تفریق، ضرب، تقسیم، تقسیم صحیح، باقی‌مانده و توان اون دو عدد رو چاپ کنه.</p>
+    </div>
+
+    <div class="task">
+      <b>۲. زوج یا فرد؟</b>
+      <p>یک عدد از کاربر بگیر و با استفاده از عملگر <code style="direction:ltr;display:inline-block;">%</code> بگو که اون عدد زوجه یا فرد. (فعلاً کافیه با محاسبه‌ی باقی‌مانده و چاپ نتیجه انجامش بدی، نیازی به if نیست.)</p>
+    </div>
+
+    <div class="task">
+      <b>۳. محاسبه‌ی مساحت و محیط مربع</b>
+      <p>طول ضلع یک مربع رو از کاربر بگیر و مساحت (<code style="direction:ltr;display:inline-block;">side ** 2</code>) و محیط (<code style="direction:ltr;display:inline-block;">side * 4</code>) اون رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۴. شمارنده‌ی امتیاز بازی</b>
+      <p>یک متغیر به نام <code style="direction:ltr;display:inline-block;">score</code> با مقدار اولیه‌ی ۰ بساز. با استفاده از عملگرهای <code style="direction:ltr;display:inline-block;">+=</code> و <code style="direction:ltr;display:inline-block;">-=</code>، سه بار امتیاز رو تغییر بده (مثلاً یک بار ۱۰ امتیاز اضافه کن، یک بار ۵ تا کم کن) و بعد از هر تغییر، امتیاز فعلی رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۵. چالش اضافه (اختیاری) ⭐</b>
+      <p>سن کاربر رو بگیر و با استفاده از <code style="direction:ltr;display:inline-block;">**=</code> عدد سن رو به توان ۲ برسون و نتیجه رو با یک جمله‌ی بامزه چاپ کن؛ مثلاً: «اگه سنت رو به توان ۲ برسونیم می‌شه ...»</p>
+    </div>
+  </section>
+
+  <footer>
+    ساخته‌شده با 💜 برای جلسه‌ی دوم دوره‌ی پایتون
+  </footer>
+
+</div>
+</body>
+</html>
