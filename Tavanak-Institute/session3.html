@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جلسه سوم | عملگرهای مقایسه‌ای و منطقی در پایتون</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink: #ff6fa5;
+    --purple: #8b5cf6;
+    --purple-dark: #6d28d9;
+    --bg: #fdf6fb;
+    --card: #ffffff;
+    --ink: #34213d;
+    --muted: #7a6a85;
+    --code-bg: #2b2140;
+    --code-ink: #f3e8ff;
+    --green: #22c55e;
+    --yellow: #fef3c7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Vazirmatn', sans-serif;
+    background: linear-gradient(180deg, #fff0f7 0%, var(--bg) 300px, var(--bg) 100%);
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  .wrap{max-width: 880px; margin: 0 auto; padding: 24px 20px 80px;}
+
+  header.hero{
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align:center;
+    color:white;
+    box-shadow: 0 20px 40px -15px rgba(139,92,246,0.5);
+    margin-bottom: 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"✅❌🔍✨";
+    position:absolute;
+    font-size: 90px;
+    opacity:0.15;
+    top:-20px;
+    left:-10px;
+    letter-spacing: 20px;
+  }
+  header.hero h1{
+    font-size: 30px;
+    margin: 0 0 8px;
+    font-weight:800;
+  }
+  header.hero p{
+    margin:0;
+    font-size:16px;
+    opacity:0.95;
+  }
+  .badge{
+    display:inline-block;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 5px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  section.card{
+    background: var(--card);
+    border-radius: 22px;
+    padding: 26px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 6px 20px -10px rgba(139,92,246,0.25);
+    border: 1px solid #f3e6f5;
+  }
+
+  h2.section-title{
+    font-size: 22px;
+    color: var(--purple-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:0;
+    border-bottom: 2px dashed #f0d9f5;
+    padding-bottom: 12px;
+  }
+  h3{
+    color:#a3268a;
+    font-size:17px;
+    margin-bottom:6px;
+  }
+
+  ul, ol{padding-right: 22px; margin: 10px 0;}
+  li{margin-bottom:6px;}
+
+  table{
+    width:100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14.5px;
+    overflow:hidden;
+    border-radius: 12px;
+  }
+  th, td{
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #f0e2f4;
+  }
+  th{
+    background: linear-gradient(90deg, #fbeaf6, #f3e8ff);
+    color: var(--purple-dark);
+    font-weight:700;
+  }
+  tr:nth-child(even){ background: #fdf8fd; }
+  td code, th code{ direction: ltr; display:inline-block; }
+
+  .quiz{
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border: 1px dashed #f0c94a;
+    margin-top: 12px;
+  }
+  .quiz p{margin:4px 0;}
+
+  .fun-fact{
+    background: linear-gradient(135deg, #fff0f9, #f3e8ff);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border-right: 4px solid var(--pink);
+    margin: 14px 0;
+  }
+  .fun-fact b{color:#c026a3;}
+
+  .recap{
+    background:#f5f3ff;
+    border-radius:16px;
+    padding:14px 18px;
+    border-right:4px solid var(--purple);
+    margin-bottom:8px;
+    font-size:14.5px;
+  }
+  .recap b{color:var(--purple-dark);}
+
+  .code-block{
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 14.5px;
+    direction: ltr;
+    text-align: left;
+    overflow-x:auto;
+    margin: 10px 0;
+    white-space: pre-wrap;
+    line-height:1.7;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .code-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color: #d8b4fe;
+    font-size:12px;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .comment{color:#9ca3af;}
+  .kw{color:#fca5f1;}
+  .num-tok{color:#93c5fd;}
+  .op{color:#fbbf24;}
+  .bool-tok{color:#5eead4;}
+
+  .output-block{
+    background:#0f172a;
+    color:#4ade80;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family:'Courier New', monospace;
+    font-size:14.5px;
+    direction: ltr;
+    text-align:left;
+    margin: -4px 0 12px;
+    white-space: pre-wrap;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .output-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+
+  .tip{
+    background:#ecfdf5;
+    border-right:4px solid var(--green);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14.5px;
+    margin:12px 0;
+  }
+  .tip b{color:#16a34a;}
+
+  .warn{
+    background:#fff1f2;
+    border-right:4px solid #fb7185;
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14.5px;
+    margin:12px 0;
+  }
+  .warn b{color:#e11d48;}
+
+  .activity{
+    background: linear-gradient(135deg,#eef2ff,#fdf4ff);
+    border: 2px dashed var(--purple);
+    border-radius:18px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .activity h3{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--purple-dark);
+  }
+
+  .homework{
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 2px solid #fbbf24;
+    border-radius: 22px;
+    padding: 22px 24px;
+  }
+  .homework h2.section-title{ color:#b45309; border-bottom-color:#fde68a; }
+  .homework h3{ color:#b45309; }
+  .homework .task{
+    background:white;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:12px;
+    border-right:4px solid #f59e0b;
+  }
+  .homework .task b{color:#92400e;}
+
+  footer{
+    text-align:center;
+    color: var(--muted);
+    font-size:13px;
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">جلسه سوم از دوره پایتون 🐍</span>
+    <h1>عملگرهای مقایسه‌ای و منطقی</h1>
+    <p>جزوه‌ی درسی</p>
+  </header>
+
+  <section class="card">
+    <h2 class="section-title">🔁 یادآوری کوتاه از جلسه‌ی قبل</h2>
+    <div class="recap">
+      توی جلسه‌ی قبل با عملگرهای حسابی مثل <code style="direction:ltr;display:inline-block;">+</code>، <code style="direction:ltr;display:inline-block;">-</code>، <code style="direction:ltr;display:inline-block;">//</code> و <code style="direction:ltr;display:inline-block;">%</code> آشنا شدیم. یادته با عملگر <code style="direction:ltr;display:inline-block;">%</code> تونستیم بفهمیم یک عدد زوجه یا فرده؟ 🎯
+    </div>
+    <div class="code-block"><span class="label">مرور سریع</span>a = <span class="num-tok">10</span>
+b = <span class="num-tok">3</span>
+<span class="kw">print</span>(a + b)     <span class="comment"># Addition</span>
+<span class="kw">print</span>(a // b)    <span class="comment"># Floor division</span>
+<span class="kw">print</span>(a % b)     <span class="comment"># Remainder</span>
+
+age = <span class="kw">input</span>(<span class="op">"What is your age? "</span>)
+next_age = <span class="kw">int</span>(age) + <span class="num-tok">1</span>
+<span class="kw">print</span>(<span class="op">"Next year, you will be"</span>, next_age)</div>
+    <div class="output-block"><span class="label">خروجی نمونه</span>13
+3
+1
+What is your age? 14
+Next year, you will be 15</div>
+
+    <h3>یادآوری تمرین «زوج یا فرد»</h3>
+    <div class="code-block"><span class="label">کد</span>number = <span class="kw">int</span>(<span class="kw">input</span>(<span class="op">"Enter a number: "</span>))
+remainder = number % <span class="num-tok">2</span>
+<span class="kw">print</span>(<span class="op">"Remainder when divided by 2:"</span>, remainder)
+<span class="kw">print</span>(<span class="op">"0 means even, 1 means odd"</span>)</div>
+    <div class="output-block"><span class="label">خروجی</span>Enter a number: 7
+Remainder when divided by 2: 1
+0 means even, 1 means odd</div>
+    <p>توی این جلسه یک قدم جلوتر می‌ریم و یاد می‌گیریم چطور دو مقدار رو با هم <b>مقایسه</b> کنیم و از نتیجه‌ی مقایسه‌ها برای تصمیم‌گیری استفاده کنیم. 🚀</p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">⚖️ عملگرهای مقایسه‌ای</h2>
+    <p>گاهی می‌خوایم بدونیم دو مقدار با هم برابرن یا نه، یا کدوم بزرگ‌تره. برای این کار از <b>عملگرهای مقایسه‌ای</b> استفاده می‌کنیم.</p>
+
+    <table>
+      <tr><th>عملگر</th><th>توضیحات</th><th>مثال</th></tr>
+      <tr><td><code>==</code></td><td>برابر است با</td><td><code>3 == 3</code></td></tr>
+      <tr><td><code>!=</code></td><td>برابر نیست با</td><td><code>2 != 3</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>بزرگ‌تر است از</td><td><code>9 &gt; 4</code></td></tr>
+      <tr><td><code>&lt;</code></td><td>کوچک‌تر است از</td><td><code>5 &lt; 11</code></td></tr>
+      <tr><td><code>&gt;=</code></td><td>بزرگ‌تر یا مساوی است با</td><td><code>14 &gt;= 13</code></td></tr>
+      <tr><td><code>&lt;=</code></td><td>کوچک‌تر یا مساوی است با</td><td><code>2 &lt;= 3</code></td></tr>
+    </table>
+
+    <p>نتیجه‌ی عملیات‌های مقایسه‌ای همیشه یکی از این دو مقدار خاص هست: <code style="direction:ltr;display:inline-block;">True</code> (درست) یا <code style="direction:ltr;display:inline-block;">False</code> (نادرست).</p>
+
+    <div class="code-block"><span class="label">مثال</span><span class="kw">print</span>(<span class="num-tok">3</span> == <span class="num-tok">3</span>)   <span class="comment"># True</span>
+<span class="kw">print</span>(<span class="num-tok">2</span> != <span class="num-tok">3</span>)   <span class="comment"># True</span>
+<span class="kw">print</span>(<span class="num-tok">9</span> &gt; <span class="num-tok">4</span>)    <span class="comment"># True</span>
+<span class="kw">print</span>(<span class="num-tok">5</span> &lt; <span class="num-tok">11</span>)   <span class="comment"># True</span>
+<span class="kw">print</span>(<span class="num-tok">14</span> &gt;= <span class="num-tok">13</span>) <span class="comment"># True</span>
+<span class="kw">print</span>(<span class="num-tok">2</span> &lt;= <span class="num-tok">3</span>)   <span class="comment"># True</span></div>
+    <div class="output-block"><span class="label">خروجی</span>True
+True
+True
+True
+True
+True</div>
+
+    <div class="warn">⚠️ <b>مراقب باش!</b> علامت <code style="direction:ltr;display:inline-block;">==</code> برای «مقایسه» است، ولی علامت <code style="direction:ltr;display:inline-block;">=</code> برای «تخصیص مقدار» است. این دو کاملاً فرق دارن و اشتباه گرفتنشون یکی از رایج‌ترین اشتباهات مبتدی‌هاست!</div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">🔲 متغیرهای بولی (Boolean)</h2>
+    <p>به مقدارهایی مثل <code style="direction:ltr;display:inline-block;">True</code> و <code style="direction:ltr;display:inline-block;">False</code> که از مقایسه به دست میان، <b>مقدار بولی (Boolean)</b> می‌گیم. می‌تونیم این مقدارها رو هم داخل متغیر ذخیره کنیم.</p>
+
+    <div class="code-block"><span class="label">کد</span>a = <span class="num-tok">13</span> == <span class="num-tok">13</span>
+b = <span class="num-tok">12</span> == <span class="num-tok">12</span>
+<span class="kw">print</span>(b, a)
+c = a &amp; b
+c</div>
+    <div class="output-block"><span class="label">خروجی</span>True True
+True</div>
+
+    <h3>این کد چیکار کرد؟</h3>
+    <ul>
+      <li><code style="direction:ltr;display:inline-block;">a = 13 == 13</code> یعنی حاصل مقایسه (که <code style="direction:ltr;display:inline-block;">True</code> هست) رو داخل متغیر <code style="direction:ltr;display:inline-block;">a</code> ذخیره کردیم.</li>
+      <li>به همین شکل <code style="direction:ltr;display:inline-block;">b</code> هم مقدار <code style="direction:ltr;display:inline-block;">True</code> رو گرفت.</li>
+      <li><code style="direction:ltr;display:inline-block;">c = a & b</code> یعنی <code style="direction:ltr;display:inline-block;">a</code> و <code style="direction:ltr;display:inline-block;">b</code> رو با علامت <code style="direction:ltr;display:inline-block;">&</code> با هم ترکیب کردیم؛ چون هر دو <code style="direction:ltr;display:inline-block;">True</code> بودن، نتیجه هم <code style="direction:ltr;display:inline-block;">True</code> شد.</li>
+    </ul>
+
+    <div class="tip">💡 <b>نکته:</b> علامت <code style="direction:ltr;display:inline-block;">&</code> در پایتون یک عملگر «بیتی» است که روی مقدارهای بولی هم مثل «و منطقی» عمل می‌کنه، ولی روش استاندارد و خواناتر برای کار با مقدارهای بولی استفاده از کلمه‌ی <code style="direction:ltr;display:inline-block;">and</code> است که الان می‌بینیمش.</div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">🧠 عملگرهای منطقی</h2>
+    <p>وقتی چند شرط داریم و می‌خوایم اون‌ها رو با هم ترکیب کنیم، از <b>عملگرهای منطقی</b> استفاده می‌کنیم.</p>
+
+    <table>
+      <tr><th>عملگر</th><th>مثال</th><th>توضیحات</th></tr>
+      <tr><td><code>and</code></td><td><code>a and b</code></td><td>اگر هر دو متغیر <code>True</code> باشند، نتیجه <code>True</code> می‌شود.</td></tr>
+      <tr><td><code>or</code></td><td><code>a or b</code></td><td>اگر حداقل یکی از دو متغیر <code>True</code> باشد، نتیجه <code>True</code> می‌شود.</td></tr>
+      <tr><td><code>not</code></td><td><code>not a</code></td><td>اگر متغیر <code>False</code> باشد نتیجه <code>True</code> می‌شود و برعکس.</td></tr>
+    </table>
+
+    <div class="code-block"><span class="label">مثال با and</span>a = <span class="num-tok">13</span> == <span class="num-tok">13</span>   <span class="comment"># True</span>
+b = <span class="num-tok">12</span> == <span class="num-tok">12</span>   <span class="comment"># True</span>
+<span class="kw">print</span>(a and b)  <span class="comment"># True, چون هر دو True هستند</span></div>
+    <div class="output-block"><span class="label">خروجی</span>True</div>
+
+    <div class="code-block"><span class="label">مثال با or</span>x = <span class="num-tok">5</span> &gt; <span class="num-tok">10</span>   <span class="comment"># False</span>
+y = <span class="num-tok">5</span> &lt; <span class="num-tok">10</span>   <span class="comment"># True</span>
+<span class="kw">print</span>(x or y)   <span class="comment"># True, چون حداقل یکی True است</span></div>
+    <div class="output-block"><span class="label">خروجی</span>True</div>
+
+    <div class="code-block"><span class="label">مثال با not</span>is_raining = <span class="bool-tok">False</span>
+<span class="kw">print</span>(not is_raining)   <span class="comment"># True</span></div>
+    <div class="output-block"><span class="label">خروجی</span>True</div>
+
+    <div class="fun-fact">
+      🎯 <b>کجا به کارمون میاد؟</b> فرض کن می‌خوای بفهمی یک نفر می‌تونه بلیط سینمای رده‌ی سنی بالا بخره. باید بررسی کنی <b>هم</b> سنش بالای ۱۳ باشه <b>و هم</b> همراه بزرگ‌تر داشته باشه؛ اینجاست که <code style="direction:ltr;display:inline-block;">and</code> به کمکمون میاد!
+    </div>
+  </section>
+
+  <section class="card homework">
+    <h2 class="section-title">📓 تکلیف جلسه سوم</h2>
+    <p>این تمرین‌ها رو توی یک فایل پایتون بنویس و اجرا کن. فعلاً فقط از عملگرهای مقایسه‌ای و منطقی استفاده کن و نتیجه رو مستقیم چاپ کن — نیازی به <code style="direction:ltr;display:inline-block;">if</code> نیست. 💪</p>
+
+    <div class="task">
+      <b>۱. مقایسه‌ی دو عدد</b>
+      <p>دو عدد از کاربر بگیر و نتیجه‌ی این مقایسه‌ها رو چاپ کن: آیا برابرند؟ آیا نابرابرند؟ کدوم بزرگ‌تره؟ کدوم کوچک‌تر یا مساویه؟</p>
+    </div>
+
+    <div class="task">
+      <b>۲. سن رانندگی</b>
+      <p>سن یک نفر رو از کاربر بگیر و با عملگر <code style="direction:ltr;display:inline-block;">&gt;=</code> بررسی کن که آیا سنش ۱۸ یا بیشتره. نتیجه (True یا False) رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۳. ترکیب با and</b>
+      <p>دو نمره‌ی درسی از کاربر بگیر. با عملگر <code style="direction:ltr;display:inline-block;">and</code> بررسی کن که آیا <b>هر دو</b> نمره بالای ۱۰ هستند یا نه، و نتیجه رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۴. ترکیب با or</b>
+      <p>دو عدد از کاربر بگیر. با عملگر <code style="direction:ltr;display:inline-block;">or</code> بررسی کن که آیا <b>حداقل یکی</b> از اون دو عدد بزرگ‌تر از ۱۰۰ هست یا نه.</p>
+    </div>
+
+    <div class="task">
+      <b>۵. معکوس کردن با not</b>
+      <p>یک متغیر بولی به اسم <code style="direction:ltr;display:inline-block;">is_sunny</code> بساز و مقدار <code style="direction:ltr;display:inline-block;">True</code> یا <code style="direction:ltr;display:inline-block;">False</code> بهش بده. با <code style="direction:ltr;display:inline-block;">not</code> مقدار معکوسش رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۶. سوال اصلی</b>
+      <p>سه عدد از کاربر بگیر و با ترکیب <code style="direction:ltr;display:inline-block;">and</code> و <code style="direction:ltr;display:inline-block;">or</code> بررسی کن که آیا «عدد اول از عدد دوم بزرگ‌تره و عدد سوم هم مثبته». نتیجه رو چاپ کن.</p>
+    </div>
+  </section>
+
+
+</div>
+</body>
+</html>
