@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جلسه چهارم | رشته‌ها و تبدیل نوع داده در پایتون</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink: #ff6fa5;
+    --purple: #8b5cf6;
+    --purple-dark: #6d28d9;
+    --bg: #fdf6fb;
+    --card: #ffffff;
+    --ink: #34213d;
+    --muted: #7a6a85;
+    --code-bg: #2b2140;
+    --code-ink: #f3e8ff;
+    --green: #22c55e;
+    --yellow: #fef3c7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Vazirmatn', sans-serif;
+    background: linear-gradient(180deg, #fff0f7 0%, var(--bg) 300px, var(--bg) 100%);
+    color: var(--ink);
+    line-height: 1.9;
+  }
+  .wrap{max-width: 880px; margin: 0 auto; padding: 24px 20px 80px;}
+
+  header.hero{
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 28px;
+    padding: 40px 30px;
+    text-align:center;
+    color:white;
+    box-shadow: 0 20px 40px -15px rgba(139,92,246,0.5);
+    margin-bottom: 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"🔤✂️🔁✨";
+    position:absolute;
+    font-size: 90px;
+    opacity:0.15;
+    top:-20px;
+    left:-10px;
+    letter-spacing: 20px;
+  }
+  header.hero h1{
+    font-size: 30px;
+    margin: 0 0 8px;
+    font-weight:800;
+  }
+  header.hero p{
+    margin:0;
+    font-size:16px;
+    opacity:0.95;
+  }
+  .badge{
+    display:inline-block;
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 5px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  section.card{
+    background: var(--card);
+    border-radius: 22px;
+    padding: 26px 26px;
+    margin-bottom: 22px;
+    box-shadow: 0 6px 20px -10px rgba(139,92,246,0.25);
+    border: 1px solid #f3e6f5;
+  }
+
+  h2.section-title{
+    font-size: 22px;
+    color: var(--purple-dark);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:0;
+    border-bottom: 2px dashed #f0d9f5;
+    padding-bottom: 12px;
+  }
+  h3{
+    color:#a3268a;
+    font-size:17px;
+    margin-bottom:6px;
+  }
+
+  ul, ol{padding-right: 22px; margin: 10px 0;}
+  li{margin-bottom:6px;}
+
+  table{
+    width:100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14.5px;
+    overflow:hidden;
+    border-radius: 12px;
+  }
+  th, td{
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid #f0e2f4;
+  }
+  th{
+    background: linear-gradient(90deg, #fbeaf6, #f3e8ff);
+    color: var(--purple-dark);
+    font-weight:700;
+  }
+  tr:nth-child(even){ background: #fdf8fd; }
+  td code, th code{ direction: ltr; display:inline-block; }
+
+  .quiz{
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border: 1px dashed #f0c94a;
+    margin-top: 12px;
+  }
+  .quiz p{margin:4px 0;}
+
+  .fun-fact{
+    background: linear-gradient(135deg, #fff0f9, #f3e8ff);
+    border-radius: 16px;
+    padding: 16px 18px;
+    border-right: 4px solid var(--pink);
+    margin: 14px 0;
+  }
+  .fun-fact b{color:#c026a3;}
+
+  .recap{
+    background:#f5f3ff;
+    border-radius:16px;
+    padding:14px 18px;
+    border-right:4px solid var(--purple);
+    margin-bottom:8px;
+    font-size:14.5px;
+  }
+  .recap b{color:var(--purple-dark);}
+
+  .code-block{
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 14.5px;
+    direction: ltr;
+    text-align: left;
+    overflow-x:auto;
+    margin: 10px 0;
+    white-space: pre-wrap;
+    line-height:1.7;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .code-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color: #d8b4fe;
+    font-size:12px;
+    margin-bottom:8px;
+    font-weight:600;
+  }
+  .comment{color:#9ca3af;}
+  .kw{color:#fca5f1;}
+  .num-tok{color:#93c5fd;}
+  .op{color:#fbbf24;}
+  .bool-tok{color:#5eead4;}
+  .fn{color:#67e8f9;}
+
+  .output-block{
+    background:#0f172a;
+    color:#4ade80;
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family:'Courier New', monospace;
+    font-size:14.5px;
+    direction: ltr;
+    text-align:left;
+    margin: -4px 0 12px;
+    white-space: pre-wrap;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  .output-block .label{
+    display:block;
+    font-family:'Vazirmatn',sans-serif;
+    direction: rtl;
+    text-align:right;
+    color:#94a3b8;
+    font-size:12px;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+
+  .tip{
+    background:#ecfdf5;
+    border-right:4px solid var(--green);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14.5px;
+    margin:12px 0;
+  }
+  .tip b{color:#16a34a;}
+
+  .warn{
+    background:#fff1f2;
+    border-right:4px solid #fb7185;
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:14.5px;
+    margin:12px 0;
+  }
+  .warn b{color:#e11d48;}
+
+  .activity{
+    background: linear-gradient(135deg,#eef2ff,#fdf4ff);
+    border: 2px dashed var(--purple);
+    border-radius:18px;
+    padding:18px 20px;
+    margin:16px 0;
+  }
+  .activity h3{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--purple-dark);
+  }
+
+  .homework{
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 2px solid #fbbf24;
+    border-radius: 22px;
+    padding: 22px 24px;
+  }
+  .homework h2.section-title{ color:#b45309; border-bottom-color:#fde68a; }
+  .homework h3{ color:#b45309; }
+  .homework .task{
+    background:white;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:12px;
+    border-right:4px solid #f59e0b;
+  }
+  .homework .task b{color:#92400e;}
+
+  .answers{
+    background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+    border: 2px solid #34d399;
+    border-radius: 22px;
+    padding: 22px 24px;
+  }
+  .answers h2.section-title{ color:#047857; border-bottom-color:#a7f3d0; }
+  .answers h3{ color:#047857; }
+  .answers .task{
+    background:white;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:14px;
+    border-right:4px solid #10b981;
+  }
+  .answers .task b{color:#065f46;}
+
+  .index-ruler{
+    display:flex;
+    justify-content:center;
+    gap:0;
+    margin:16px 0;
+    direction: ltr;
+    font-family:'Courier New', monospace;
+    flex-wrap:wrap;
+  }
+  .index-ruler .cell{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin:0 3px;
+  }
+  .index-ruler .letter{
+    background: var(--purple);
+    color:white;
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    font-size:20px;
+    font-weight:700;
+  }
+  .index-ruler .idx{
+    margin-top:6px;
+    font-size:13px;
+    color: var(--muted);
+    font-family:'Vazirmatn',sans-serif;
+  }
+
+  footer{
+    text-align:center;
+    color: var(--muted);
+    font-size:13px;
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">جلسه ۴ از دوره پایتون 🐍</span>
+    <h1>رشته‌ها (Strings) و تبدیل نوع داده</h1>
+    <p>جزوه‌ی درسی</p>
+  </header>
+
+  <section class="card">
+    <h2 class="section-title">🔁 یادآوری کوتاه از جلسه‌ی قبل</h2>
+    <div class="recap">
+      توی جلسه‌ی قبل با <b>عملگرهای مقایسه‌ای</b> (مثل <code style="direction:ltr;display:inline-block;">==</code> و <code style="direction:ltr;display:inline-block;">&gt;</code>) و <b>عملگرهای منطقی</b> (<code style="direction:ltr;display:inline-block;">and</code>، <code style="direction:ltr;display:inline-block;">or</code>، <code style="direction:ltr;display:inline-block;">not</code>) آشنا شدیم و یاد گرفتیم چطور با ترکیب چند شرط، مقدارهای <code style="direction:ltr;display:inline-block;">True</code> و <code style="direction:ltr;display:inline-block;">False</code> بسازیم. 🎯
+    </div>
+    <p>توی این جلسه از دنیای اعداد یک کم فاصله می‌گیریم و می‌ریم سراغ <b>رشته‌ها (Strings)</b> — یعنی کار کردن با متن — و همچنین یاد می‌گیریم چطور نوع داده‌ها رو به هم تبدیل کنیم.</p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">🔤 کار با رشته‌ها (Strings)</h2>
+    <p>رشته (String) یعنی متن، مثل اسم یا یک جمله. پایتون کلی کار جالب باهاشون می‌تونه انجام بده!</p>
+
+    <div class="code-block"><span class="label">کد</span>first = <span class="op">"Hello"</span>
+last = <span class="op">"World"</span>
+<span class="kw">print</span>(first + <span class="op">" "</span> + last)      <span class="comment"># Concatenation</span>
+<span class="kw">print</span>(first * <span class="num-tok">3</span>)               <span class="comment"># Repetition</span>
+<span class="kw">print</span>(<span class="fn">len</span>(first))              <span class="comment"># Length</span>
+<span class="kw">print</span>(first[<span class="num-tok">0</span>])                <span class="comment"># Indexing</span>
+<span class="kw">print</span>(first[<span class="num-tok">1</span>:<span class="num-tok">4</span>])              <span class="comment"># Slicing</span></div>
+
+    <div class="output-block"><span class="label">خروجی</span>Hello World
+HelloHelloHello
+5
+H
+ell</div>
+
+    <h3>🔍 هر خط چیکار کرد؟</h3>
+    <table>
+      <tr><th>عملیات</th><th>کد</th><th>توضیح</th></tr>
+      <tr><td>اتصال (Concatenation)</td><td><code>first + " " + last</code></td><td>دو رشته رو با علامت <code>+</code> به هم می‌چسبونیم</td></tr>
+      <tr><td>تکرار (Repetition)</td><td><code>first * 3</code></td><td>یک رشته رو چند بار پشت‌سرهم تکرار می‌کنیم</td></tr>
+      <tr><td>طول (Length)</td><td><code>len(first)</code></td><td>تعداد حروف داخل رشته رو می‌شمریم</td></tr>
+      <tr><td>اندیس‌گذاری (Indexing)</td><td><code>first[0]</code></td><td>یک حرف مشخص رو از روی جایگاهش برمی‌داریم</td></tr>
+      <tr><td>برش (Slicing)</td><td><code>first[1:4]</code></td><td>یک تکه از وسط رشته رو جدا می‌کنیم</td></tr>
+    </table>
+
+    <h3>📏 شماره‌گذاری حروف در پایتون (Indexing)</h3>
+    <p>نکته‌ی خیلی مهم: پایتون شمارش رو از <b>صفر</b> شروع می‌کنه، نه از یک! پس اولین حرف، اندیس ۰ داره.</p>
+
+    <div class="index-ruler">
+      <div class="cell"><div class="letter">H</div><div class="idx">[0]</div></div>
+      <div class="cell"><div class="letter">e</div><div class="idx">[1]</div></div>
+      <div class="cell"><div class="letter">l</div><div class="idx">[2]</div></div>
+      <div class="cell"><div class="letter">l</div><div class="idx">[3]</div></div>
+      <div class="cell"><div class="letter">o</div><div class="idx">[4]</div></div>
+    </div>
+
+    <p>پس برای رشته‌ی <code style="direction:ltr;display:inline-block;">"Hello"</code>:</p>
+    <ul>
+      <li><code style="direction:ltr;display:inline-block;">first[0]</code> می‌شه <code style="direction:ltr;display:inline-block;">"H"</code> (حرف اول)</li>
+      <li><code style="direction:ltr;display:inline-block;">first[1:4]</code> یعنی از اندیس ۱ شروع کن تا <b>قبل از</b> اندیس ۴؛ پس حروف اندیس ۱، ۲ و ۳ رو برمی‌داره: <code style="direction:ltr;display:inline-block;">"ell"</code></li>
+    </ul>
+
+    <div class="tip">💡 <b>نکته‌ی طلایی:</b> توی برش <code style="direction:ltr;display:inline-block;">[start:end]</code>، حرفِ اندیس <code style="direction:ltr;display:inline-block;">end</code> جزو نتیجه نیست! یعنی همیشه یکی کمتر از عدد آخر رو می‌گیریم.</div>
+
+    <div class="fun-fact">
+      🎯 <b>کجا به کارمون میاد؟</b> اندیس‌گذاری و برش خیلی توی کارهایی مثل چک کردن حرف اول اسم کاربر، یا جدا کردن پسوند یک فایل (مثل .jpg یا .mp3) کاربرد داره!
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">🔄 تبدیل نوع داده (Type Conversion)</h2>
+    <p>گاهی لازمه یک نوع داده رو به نوع دیگه‌ای تبدیل کنیم؛ مثلاً یک عدد اعشاری رو به عدد صحیح، یا یک رشته رو به عدد. پایتون برای این کار سه تا تابع آماده داره: <code style="direction:ltr;display:inline-block;">int()</code>، <code style="direction:ltr;display:inline-block;">float()</code> و <code style="direction:ltr;display:inline-block;">str()</code>.</p>
+
+    <h3>1️⃣ تبدیل به عدد صحیح با ()int</h3>
+    <div class="code-block"><span class="label">کد</span>a = <span class="num-tok">3.14</span>  <span class="comment"># float</span>
+a = <span class="fn">int</span>(a)
+b = <span class="op">"3"</span>  <span class="comment"># string</span>
+b = <span class="fn">int</span>(b)
+<span class="kw">print</span>(a)  <span class="comment"># Output: 3</span>
+<span class="kw">print</span>(b)  <span class="comment"># Output: 3</span></div>
+    <div class="output-block"><span class="label">خروجی</span>3
+3</div>
+    <p>وقتی <code style="direction:ltr;display:inline-block;">int()</code> رو روی یک عدد اعشاری بزنیم، بخش اعشاری <b>حذف می‌شه</b> (نه گرد می‌شه!). مثلاً <code style="direction:ltr;display:inline-block;">3.14</code> می‌شه <code style="direction:ltr;display:inline-block;">3</code>.</p>
+
+    <h3>2️⃣ تبدیل به عدد اعشاری با ()float</h3>
+    <div class="code-block"><span class="label">کد</span>a = <span class="num-tok">1</span>
+a = <span class="fn">float</span>(a)
+b = <span class="op">"3.14"</span>
+b = <span class="fn">float</span>(b)
+<span class="kw">print</span>(a)  <span class="comment"># Output: 1.0</span>
+<span class="kw">print</span>(b)  <span class="comment"># Output: 3.14</span></div>
+    <div class="output-block"><span class="label">خروجی</span>1.0
+3.14</div>
+    <p>وقتی عدد صحیح <code style="direction:ltr;display:inline-block;">1</code> رو به <code style="direction:ltr;display:inline-block;">float()</code> می‌دیم، به <code style="direction:ltr;display:inline-block;">1.0</code> تبدیل می‌شه — یعنی همون عدده، فقط حالا اعشاریه.</p>
+
+    <h3>3️⃣ تبدیل به رشته با ()str</h3>
+    <div class="code-block"><span class="label">کد</span>number = <span class="num-tok">42</span>
+str_number = <span class="fn">str</span>(number)
+<span class="kw">print</span>(str_number)  <span class="comment"># Output: '42'</span></div>
+    <div class="output-block"><span class="label">خروجی</span>42</div>
+    <p>الان <code style="direction:ltr;display:inline-block;">str_number</code> دیگه عدد نیست، بلکه یک رشته‌ست که شبیه عدده. این یعنی دیگه نمی‌تونیم روش عملیات ریاضی مثل جمع انجام بدیم، ولی می‌تونیم مثل هر رشته‌ی دیگه‌ای باهاش کار کنیم (مثلاً با رشته‌های دیگه بچسبونیمش).</p>
+
+    <table>
+      <tr><th>تابع</th><th>کاربرد</th><th>مثال</th></tr>
+      <tr><td><code>int()</code></td><td>تبدیل به عدد صحیح</td><td><code>int("5")</code> → <code>5</code></td></tr>
+      <tr><td><code>float()</code></td><td>تبدیل به عدد اعشاری</td><td><code>float("2.5")</code> → <code>2.5</code></td></tr>
+      <tr><td><code>str()</code></td><td>تبدیل به رشته</td><td><code>str(42)</code> → <code>"42"</code></td></tr>
+    </table>
+
+    <div class="warn">⚠️ <b>مراقب باش:</b> اگه بخوای رشته‌ای که عدد نیست رو به عدد تبدیل کنی (مثلاً <code style="direction:ltr;display:inline-block;">int("hello")</code>) پایتون خطا می‌ده. تبدیل نوع فقط وقتی جواب می‌ده که محتوای رشته واقعاً یک عدد باشه.</div>
+  </section>
+
+  <section class="card answers">
+    <h2 class="section-title">✅ پاسخ تمرین‌های جلسه سوم</h2>
+    <p>این‌ها نمونه‌پاسخ‌های تکلیف جلسه‌ی قبل هستن که با هم توی کلاس حل کردیم:</p>
+
+    <div class="task">
+      <b>۱. مقایسه‌ی دو عدد</b>
+      <div class="code-block">n1 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter first number: "</span>))
+n2 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter second number: "</span>))
+
+<span class="kw">print</span>(<span class="op">"Equal:"</span>, n1 == n2)
+<span class="kw">print</span>(<span class="op">"Not equal:"</span>, n1 != n2)
+<span class="kw">print</span>(<span class="op">"Greater:"</span>, n1 &gt; n2)
+<span class="kw">print</span>(<span class="op">"Less or equal:"</span>, n1 &lt;= n2)</div>
+    </div>
+
+    <div class="task">
+      <b>۲. سن رانندگی</b>
+      <div class="code-block">age = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter your age: "</span>))
+<span class="kw">print</span>(<span class="op">"Can drive:"</span>, age &gt;= <span class="num-tok">18</span>)</div>
+    </div>
+
+    <div class="task">
+      <b>۳. ترکیب با and</b>
+      <div class="code-block">score1 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter first score: "</span>))
+score2 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter second score: "</span>))
+
+<span class="kw">print</span>(<span class="op">"Both above 10:"</span>, score1 &gt; <span class="num-tok">10</span> and score2 &gt; <span class="num-tok">10</span>)</div>
+    </div>
+
+    <div class="task">
+      <b>۴. ترکیب با or</b>
+      <div class="code-block">n1 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter first number: "</span>))
+n2 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter second number: "</span>))
+
+<span class="kw">print</span>(<span class="op">"At least one above 100:"</span>, n1 &gt; <span class="num-tok">100</span> or n2 &gt; <span class="num-tok">100</span>)</div>
+    </div>
+
+    <div class="task">
+      <b>۵. معکوس کردن با not</b>
+      <div class="code-block">is_sunny = <span class="bool-tok">True</span>
+<span class="kw">print</span>(<span class="op">"Not sunny:"</span>, not is_sunny)</div>
+    </div>
+
+    <div class="task">
+      <b>۶.تمرین اساسی</b>
+      <div class="code-block">n1 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter first number: "</span>))
+n2 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter second number: "</span>))
+n3 = <span class="fn">int</span>(<span class="kw">input</span>(<span class="op">"Enter third number: "</span>))
+
+<span class="kw">print</span>(<span class="op">"Condition met:"</span>, n1 &gt; n2 and n3 &gt; <span class="num-tok">0</span>)</div>
+    </div>
+  </section>
+
+  <section class="card homework">
+    <h2 class="section-title">📓 تکلیف جلسه چهارم</h2>
+    <p>این تمرین‌ها رو توی یک فایل پایتون بنویس و اجرا کن. تمرکز این جلسه روی رشته‌ها و تبدیل نوع داده‌ست. 💪</p>
+
+    <div class="task">
+      <b>۱. کارت معرفی با رشته‌ها</b>
+      <p>یک متغیر با نام کوچیکت و یکی با نام فامیلیت بساز. با استفاده از <code style="direction:ltr;display:inline-block;">+</code> اون‌ها رو به هم بچسبون و نام کامل رو چاپ کن. بعد با <code style="direction:ltr;display:inline-block;">len()</code> تعداد حروف نام کاملت رو (بدون فاصله) چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۲. تکرار الگو</b>
+      <p>یک رشته‌ی کوتاه مثل <code style="direction:ltr;display:inline-block;">"⭐"</code> یا <code style="direction:ltr;display:inline-block;">"ab"</code> بساز و با عملگر <code style="direction:ltr;display:inline-block;">*</code> اون رو ۵ بار تکرار کن و چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۳. حرف اول و حرف آخر</b>
+      <p>یک اسم از کاربر بگیر (با <code style="direction:ltr;display:inline-block;">input()</code>) و با اندیس‌گذاری، حرف اول و حرف آخر اون اسم رو جدا چاپ کن. (راهنمایی: برای حرف آخر می‌تونی از اندیس <code style="direction:ltr;display:inline-block;">-1</code> استفاده کنی.)</p>
+    </div>
+
+    <div class="task">
+      <b>۴. برش کلمه</b>
+      <p>یک کلمه‌ی حداقل ۶ حرفی رو داخل یک متغیر بریز و با <code style="direction:ltr;display:inline-block;">slicing</code> فقط سه حرف وسط اون رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۵. ماشین تبدیل نوع داده</b>
+      <p>یک عدد اعشاری تعریف کن و با <code style="direction:ltr;display:inline-block;">int()</code> به عدد صحیح تبدیلش کن. یک رشته‌ی عددی مثل <code style="direction:ltr;display:inline-block;">"7"</code> تعریف کن و با <code style="direction:ltr;display:inline-block;">float()</code> به عدد اعشاری تبدیلش کن. یک عدد صحیح تعریف کن و با <code style="direction:ltr;display:inline-block;">str()</code> به رشته تبدیلش کن. هر سه نتیجه رو چاپ کن.</p>
+    </div>
+
+    <div class="task">
+      <b>۶. تمرین ترکیبی</b>
+      <p>سن کاربر رو با <code style="direction:ltr;display:inline-block;">input()</code> بگیر (که به‌صورت رشته میاد)، اون رو با <code style="direction:ltr;display:inline-block;">int()</code> به عدد تبدیل کن، ۱۰ سال بهش اضافه کن، و بعد نتیجه رو دوباره با <code style="direction:ltr;display:inline-block;">str()</code> به رشته تبدیل کن و داخل یک جمله‌ی کامل چاپ کن.</p>
+    </div>
+  </section>
+
+
+
+</div>
+</body>
+</html>
